@@ -1,0 +1,66 @@
+﻿@page
+@model PersonalDataModel
+@{
+    ViewData["Title"] = "Personal Data";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="h5 mb-3">Dữ liệu cá nhân</h4>
+                <p class="text-muted">Bạn có thể tải xuống tất cả dữ liệu cá nhân mà hệ thống lưu trữ hoặc xóa tài khoản và dữ liệu liên quan.</p>
+
+                <div class="d-flex gap-2">
+                    <form id="download-data" asp-page="DownloadPersonalData" method="post" class="d-inline">
+                        <button class="btn btn-primary" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-2" viewBox="0 0 16 16" aria-hidden="true">
+                                <path d="M.5 9.9V13a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V9.9h-1V13a.5.5 0 0 1-.5.5H2A.5.5 0 0 1 1.5 13V9.9H.5z"/>
+                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0L11.5 4.293V8.5a.5.5 0 0 1-1 0V5.207L8.354 2.061a.5.5 0 0 0-.708 0L5.5 5.207V8.5a.5.5 0 0 1-1 0V4.293L7.646 1.146z"/>
+                            </svg>
+                            Tải xuống dữ liệu
+                        </button>
+                    </form>
+
+                    <button id="deleteAccountBtn" type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M5.5 5.5v7a.5.5 0 0 0 1 0v-7h-1zM9.5 5.5v7a.5.5 0 0 0 1 0v-7h-1z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4H2.5a1 1 0 0 1 0-2H5.5a1 1 0 0 1 .98.804L6.7 2h2.6l.22-.196A1 1 0 0 1 10.5 1h3a1 1 0 0 1 1 1z"/>
+                        </svg>
+                        Xóa tài khoản
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <strong>Lưu ý:</strong> Hành động xóa sẽ xóa tất cả dữ liệu liên quan và không thể khôi phục.
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-page="DeletePersonalData" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa tài khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa tài khoản và tất cả dữ liệu liên quan? Hành động này không thể hoàn tác.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa vĩnh viễn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

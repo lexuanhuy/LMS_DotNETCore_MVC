@@ -1,0 +1,114 @@
+﻿@model LMS_DotNETCore_MVC.Models.Lesson
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var isEdit = Model != null && Model.Id > 0;
+    ViewData["Title"] = isEdit ? "Sửa bài học" : "Thêm bài học";
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h4 mb-0">@ViewData["Title"]</h1>
+        <a asp-area="Instructor" asp-controller="Courses" asp-action="Index" class="btn btn-outline-secondary">
+            Quay lại danh sách khóa học
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-area="Instructor"
+                  asp-controller="Lessons"
+                  asp-action="Update"
+                  enctype="multipart/form-data"
+                  method="post"
+                  class="row g-3 needs-validation">
+                @Html.AntiForgeryToken()
+
+                @* Hidden fields *@
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CourseId" />
+
+                <div class="col-12">
+                    <label asp-for="Title" class="form-label">Tiêu đề bài học</label>
+                    <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài học" required />
+                    <div class="invalid-feedback">Tiêu đề là bắt buộc.</div>
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label asp-for="OrderIndex" class="form-label">Số thứ tự</label>
+                    <input asp-for="OrderIndex" type="number" min="1" class="form-control" placeholder="1" required />
+                    <div class="invalid-feedback">Vui lòng nhập số thứ tự hợp lệ.</div>
+                    <span asp-validation-for="OrderIndex" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-8">
+                    <label class="form-label">Tải lên Video / Tài liệu PDF</label>
+                    <input type="file" name="lessonFile" class="form-control" accept=".mp4,.mkv,.avi,.pdf" />
+                    <div class="form-text">Hỗ trợ định dạng video (.mp4,...) hoặc tài liệu (.pdf). File sẽ được lưu tự động theo khóa học.</div>
+                    @if (!string.IsNullOrEmpty(Model.ContentUrl) && (Model.ContentUrl.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase) || Model.ContentUrl.EndsWith(".mkv", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        <div class="ratio ratio-16x9 my-3">
+                            <video controls controlsList="nodownload" class="rounded shadow-sm">
+                                <source src="@Model.ContentUrl" type="video/mp4" />
+                                Trình duyệt của bạn không hỗ trợ thẻ video.
+                            </video>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(Model.ContentUrl) && Model.ContentUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <div class="alert alert-info">
+                            Đây là tài liệu dạng PDF. <a href="@Model.ContentUrl" target="_blank" class="alert-link">Nhấn vào đây để xem hoặc tải về</a>.
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Chưa có nội dung video hoặc tài liệu cho bài học này.</p>
+                    }
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label">Nội dung mô tả</label>
+                    <textarea asp-for="Description" class="form-control" rows="6" placeholder="Mô tả chi tiết cho bài học..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex gap-2 justify-content-end mt-2">
+                    <a asp-area="Instructor" asp-controller="Lessons" asp-action="Index" asp-route-courseId="@Model?.CourseId"
+                       class="btn btn-outline-secondary">Quay lại</a>
+
+                    <button type="submit" class="btn btn-primary">
+                        @if (isEdit)
+                        {
+                            <text>Lưu thay đổi</text>
+                        }
+                        else
+                        {
+                            <text>Lưu bài học</text>
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Bootstrap 5 client-side validation helper
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+}

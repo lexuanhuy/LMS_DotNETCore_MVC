@@ -1,0 +1,105 @@
+﻿@model IEnumerable<LMS_DotNETCore_MVC.Models.Lesson>
+@using System.Linq
+@{
+    ViewData["Title"] = "Danh sách bài học";
+    var courseTitle = ViewBag.CourseTitle as string ?? "Thông tin khóa học";
+    var courseId = ViewBag.CourseId;
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h1 class="h4 mb-0">@courseTitle</h1>
+            <div class="small text-muted">Quản lý các bài học thuộc khóa học</div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-area="Instructor" asp-controller="Courses" asp-action="Index" class="btn btn-secondary">
+                Quay lại danh sách khóa học
+            </a>
+
+            <a asp-area="Instructor" asp-controller="Lessons" asp-action="Create" asp-route-courseId="@courseId" class="btn btn-primary">
+                Thêm bài học mới
+            </a>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:100px;">Số thứ tự</th>
+                                <th>Tên bài học</th>
+                                <th style="width:220px;">Link Video / Thời lượng</th>
+                                <th style="width:220px;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lesson in Model.OrderBy(l => l.OrderIndex))
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@lesson.OrderIndex</td>
+
+                                    <td>
+                                        <div class="fw-medium">@lesson.Title</div>
+                                        @if (!string.IsNullOrEmpty(lesson.Description))
+                                        {
+                                            <div class="small text-muted text-truncate" style="max-width:420px;">@lesson.Description</div>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(lesson.ContentUrl))
+                                        {
+                                            <div class="d-flex flex-column">
+                                                <a href="@lesson.ContentUrl" target="_blank" rel="noopener" class="text-decoration-none">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle me-1" viewBox="0 0 16 16" aria-hidden="true">
+                                                        <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14z"/>
+                                                        <path d="M6.271 5.055a.5.5 0 0 1 .529-.038l4 2.5A.5.5 0 0 1 11 8.5v-1a.5.5 0 0 1-.729-.445l-3.571 2.232a.5.5 0 0 1-.714-.447V5.055z"/>
+                                                    </svg>
+                                                    Xem video
+                                                </a>
+                                                
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Chưa có video</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a asp-area="Instructor" asp-controller="Lessons" asp-action="Update" asp-route-id="@lesson.Id" asp-route-courseId="@courseId" class="btn btn-sm btn-outline-secondary">Sửa</a>
+
+                                            <form asp-area="Instructor" asp-controller="Lessons" asp-action="Delete" asp-route-id="@lesson.Id" asp-route-courseId="@courseId" method="post" class="m-0"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa bài học ?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <p class="mb-3 h6 text-muted">Khóa học này chưa có bài học nào</p>
+                <a asp-area="Instructor" asp-controller="Lessons" asp-action="Create" asp-route-courseId="@courseId" class="btn btn-primary">
+                    Thêm bài học đầu tiên
+                </a>
+            </div>
+        </div>
+    }
+</div>

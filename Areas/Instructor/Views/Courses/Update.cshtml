@@ -1,0 +1,76 @@
+﻿@model LMS_DotNETCore_MVC.Models.Course
+
+@{
+    ViewData["Title"] = "Thêm khóa học mới";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-3">Thêm khóa học mới</h2>
+
+                    <form asp-action="Update" method="post" enctype="multipart/form-data" class="needs-validation">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">Tên khóa học</label>
+                            <input asp-for="Title" class="form-control" placeholder="Nhập tên khóa học" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Mô tả khóa học</label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Mô tả chi tiết về khóa học"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-md-6">
+                                <label asp-for="Price" class="form-label">Giá khóa học</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₫</span>
+                                    <input asp-for="Price" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="ImageUrl" class="form-label">Ảnh bìa</label>
+                                <input asp-for="ImageUrl" type="file" class="form-control" />
+                                <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                                <img src="@Model.ImageUrl" alt="Product Image" style="max-width:200px;" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <a asp-area="Instructor" asp-controller="Courses" asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+                            <button type="submit" class="btn btn-primary">Lưu khóa học</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @* <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script> *@
+}

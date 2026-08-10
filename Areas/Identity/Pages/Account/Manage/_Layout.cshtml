@@ -1,0 +1,47 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg class="bi text-primary" width="48" height="48" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                <path fill-rule="evenodd" d="M14 14s-1-1.5-6-1.5S2 14 2 14s1-6 6-6 6 6 6 6z"/>
+            </svg>
+        </div>
+        <div>
+            <h2 class="h4 mb-0">Quản lý tài khoản</h2>
+            <div class="text-muted small">Cập nhật thông tin cá nhân, email, mật khẩu và bảo mật</div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <partial name="_ManageNav" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-9">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

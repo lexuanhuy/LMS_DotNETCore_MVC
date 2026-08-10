@@ -1,0 +1,128 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="h5 mb-3">Thông tin cơ bản</h4>
+
+                <form id="profile-form" method="post" class="row g-3" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <div class="col-12 d-flex align-items-center mb-3 gap-4">
+                        <div class="position-relative">
+                            @{
+                                var avatarUrl = string.IsNullOrEmpty(Model.CurrentUser.AvatarPath)
+                                ? Url.Content("~/images/avatars/default-avatar.png") // Bạn cần tạo file này trong wwwroot/images/
+                                : Url.Content(Model.CurrentUser.AvatarPath);
+                            }
+                            <img id="avatarPreview" src="@avatarUrl" alt="Avatar"
+                                 class="rounded-circle shadow-sm border"
+                                 style="width:100px;height:100px;object-fit:cover;">
+                        </div>
+                        <div>
+                            <label asp-for="Input.AvatarFile" class="form-label fw-bold mb-1">Đổi ảnh đại diện</label>
+                            <input asp-for="Input.AvatarFile" type="file" class="form-control" id="avatarInput" accept="image/*">
+                            <span asp-validation-for="Input.AvatarFile" class="text-danger small"></span>
+                            <div class="form-text text-muted small">Dung lượng tối đa 2MB. Định dạng: .jpg, .png</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center mb-2">
+                        <div>
+                            <div class="fw-bold">@Model.Username</div>
+                            <div class="text-muted small">Thành viên từ: @(User.Identity.Name != null ? DateTime.UtcNow.ToString("dd/MM/yyyy") : "")</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Input.FullName" class="form-control" id="fullName" placeholder="Full name" />
+                            <label for="fullName" asp-for="Input.FullName" class="form-label">Họ và tên</label>
+                            <span asp-validation-for="Input.FullName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Input.PhoneNumber" class="form-control" id="phoneNumber" placeholder="Phone number" />
+                            <label for="phoneNumber" asp-for="Input.PhoneNumber" class="form-label">Số điện thoại</label>
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Input.DateOfBirth" class="form-control" id="dateOfBirth" type="date" />
+                            <label for="dateOfBirth" asp-for="Input.DateOfBirth" class="form-label">Ngày sinh</label>
+                            <span asp-validation-for="Input.DateOfBirth" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex gap-2">
+                        <button id="update-profile-button" type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        <a asp-page="./PersonalData" class="btn btn-outline-secondary">Tải dữ liệu cá nhân</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="h6 mb-3">Bảo mật</h4>
+                <div class="row">
+                    <div class="col-sm-12 mb-3">
+                        <div class="p-3 border rounded">
+                            <div class="fw-semibold">Mật khẩu</div>
+                            <div class="text-muted small mb-2">Thay đổi mật khẩu để tăng bảo mật tài khoản.</div>
+                            <a asp-page="./ChangePassword" class="btn btn-sm btn-outline-primary">Đổi mật khẩu</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                        <div class="p-3 border rounded">
+                            <div class="fw-semibold">Xác thực 2 bước</div>
+                            <div class="text-muted small mb-2">Quản lý phương thức xác thực hai bước.</div>
+                            <a asp-page="./TwoFactorAuthentication" class="btn btn-sm btn-outline-primary">Quản lý 2FA</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('avatarInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Kiểm tra kích thước file (ví dụ giới hạn 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File ảnh không được lớn hơn 2MB.');
+                    this.value = ''; // Reset input
+                    return;
+                }
+
+                // Tạo đường dẫn tạm thời để hiển thị ảnh preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

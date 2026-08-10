@@ -1,0 +1,50 @@
+﻿@page
+@model EmailModel
+@{
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="h5 mb-3">Email</h4>
+                <partial name="_StatusMessage" for="StatusMessage" />
+
+                <form id="email-form" method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-2" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Email hiện tại</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <input asp-for="Email" class="form-control" placeholder="Email" disabled />
+                            @if (Model.IsEmailConfirmed)
+                            {
+                                <span class="badge bg-success">Đã xác thực</span>
+                            }
+                            else
+                            {
+                                <button id="sendVerificationBtn" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-outline-primary btn-sm">Gửi xác thực</button>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.NewEmail" class="form-label small">Thay đổi email</label>
+                        <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Nhập email mới" />
+                        <span asp-validation-for="Input.NewEmail" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-primary">Cập nhật email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

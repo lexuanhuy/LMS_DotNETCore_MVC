@@ -1,0 +1,36 @@
+﻿@using LMS_DotNETCore_MVC.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav d-flex align-items-center gap-2">
+	@if (SignInManager.IsSignedIn(User))
+	{
+		var currentUser = await UserManager.GetUserAsync(User);
+		<li class="nav-item d-flex align-items-center">
+			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Chào @currentUser?.FullName!</a>
+			@{
+				var avatarUrl = string.IsNullOrEmpty(currentUser.AvatarPath)
+				? Url.Content("~/images/avatars/default-avatar.png") // Bạn cần tạo file này trong wwwroot/images/
+				: Url.Content(currentUser.AvatarPath);
+			}
+			<img id="avatarPreview" src="@avatarUrl" alt="Avatar"
+				 class="rounded-circle shadow-sm border"
+				 style="width:30px;height:30px;object-fit:cover;">
+		</li>
+		<li class="nav-item">
+			<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+				<button type="submit" class="btn btn-outline-dark btn-sm">Đăng xuất</button>
+			</form>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="btn btn-sm" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
+		</li>
+		<li class="nav-item">
+			<a class="btn btn-sm btn-primary" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
+		</li>
+	}
+</ul>

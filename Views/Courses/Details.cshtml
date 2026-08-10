@@ -1,0 +1,238 @@
+﻿
+@model LMS_DotNETCore_MVC.Models.Course
+@{
+    ViewData["Title"] = Model?.Title ?? "Chi tiết khóa học";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Left column: content (8 cols) -->
+        <div class="col-12 col-lg-8 mb-4">
+            <!-- Course title -->
+            <h1 class="display-6 fw-bold mb-3">@Model?.Title</h1>
+
+            <!-- Short meta -->
+            <div class="mb-3 text-muted">
+                <span>Giảng viên: <strong>@Model?.Instructor.FullName</strong></span>
+                <span class="mx-2">•</span>
+                @* <span>@Model?.Duration</span> *@
+            </div>
+
+            <!-- Cover image -->
+            <div class="mb-4">
+                <img src="@(Model?.ImageUrl ?? Url.Content("~/images/course-placeholder-lg.jpg"))"
+                     alt="Cover - @(Model?.Title)"
+                     class="img-fluid rounded shadow-sm w-100" />
+            </div>
+
+            <!-- Detailed description -->
+            <section class="mb-4">
+                <h3 class="h5">Mô tả khóa học</h3>
+                <div class="mt-2 text-body">
+                    @if (!string.IsNullOrWhiteSpace(Model?.Description))
+                    {
+                        @Html.Raw(Model.Description)
+                    }
+                    else
+                    {
+                        <p class="text-muted">Mô tả chi tiết sẽ được cập nhật bởi giảng viên.</p>
+                    }
+                </div>
+            </section>
+
+            <!-- Lessons list -->
+            <section>
+                <h3 class="h5 mb-3">Danh sách bài học (@Model?.Lessons?.Count())</h3>
+                <ul class="list-group">
+                    @if (Model?.Lessons != null && Model.Lessons.Any())
+                    {
+                        var idx = 1;
+                        foreach (var lesson in Model.Lessons)
+                        {
+                            <li class="list-group-item d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-primary me-3">@idx</span>
+                                    <div>
+                                        <div class="fw-medium">@lesson.Title</div>
+                                        @* @if (!string.IsNullOrEmpty(lesson.Duration))
+                                        {
+                                            <small class="text-muted">@lesson.Duration</small>
+                                        } *@
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-primary d-flex align-items-center"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#lessonPlayerModal"
+                                    data-content-url="@lesson.ContentUrl"
+                                    data-lesson-title="@lesson.Title"
+                                    aria-label="Play @lesson.Title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill me-2" viewBox="0 0 16 16" aria-hidden="true">
+                                        <path d="M11.596 8.697l-6.363 3.692A.5.5 0 0 1 4 11.99V4.01a.5.5 0 0 1 .733-.442l6.363 3.692a.5.5 0 0 1 0 .882z"/>
+                                    </svg>
+                                    <span>Học</span>
+                                </button>
+                            </li>
+                            idx++;
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">Chưa có bài học nào.</li>
+                    }
+                </ul>
+            </section>
+        </div>
+
+        <!-- Right column: sticky purchase card (4 cols) -->
+        <div class="col-12 col-lg-4">
+            <div class="position-sticky" style="top:1rem;">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <small class="text-muted">Giá</small>
+                                @if (@Model?.Price > 0)
+                                {
+                                    <div class="h4 fw-bold text-primary mb-0">@Model?.Price</div>
+                                }
+                                else
+                                {
+                                    <div class="h4 fw-bold text-primary mb-0">Miễn phí</div>
+                                }
+                                
+                            </div>
+                            @* <img src="@(Model?.Instructor.AvatarUrl ?? Url.Content("~/images/avatar-placeholder.png"))"
+                                 alt="@Model?.Instructor.FullName"
+                                 class="rounded-circle" style="width:56px;height:56px;object-fit:cover;"> *@
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted">Giảng viên</small>
+                            <div class="fw-medium">@Model?.Instructor.FullName</div>
+                            @* @if (!string.IsNullOrEmpty(Model?.InstructorBioShort))
+                            {
+                                <div class="small text-muted">@Model.InstructorBioShort</div>
+                            } *@
+                        </div>
+
+                        <form asp-controller="Enrollments" asp-action="Create" method="post" class="needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="CourseId" value="@Model?.Id" />
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-2">Đăng ký khóa học</button>
+                        </form>
+
+                        <div class="text-center">
+                            <small class="text-muted">Hoặc <a asp-controller="Contact" asp-action="Index">liên hệ</a> để tư vấn thêm</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional info card -->
+                @* <div class="card border-0">
+                    <div class="card-body small text-muted">
+                        <ul class="mb-0 ps-3">
+                            <li>Đảm bảo hoàn tiền trong 7 ngày</li>
+                            <li>Truy cập trọn đời</li>
+                            <li>Chứng nhận sau khi hoàn thành</li>
+                        </ul>
+                    </div>
+                </div> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lesson Player Modal -->
+<div class="modal fade" id="lessonPlayerModal" tabindex="-1" aria-labelledby="lessonPlayerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lessonPlayerModalLabel">Bài học</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <div class="player-container">
+                    <!-- Player (iframe or video) will be injected here -->
+                    <div class="d-flex align-items-center justify-content-center" style="min-height:200px;">
+                        <div class="text-muted">Đang tải nội dung...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const modalEl = document.getElementById('lessonPlayerModal');
+
+            function toYouTubeEmbed(url) {
+                try {
+                    // YouTube watch?v= or youtu.be short links
+                    const u = new URL(url);
+                    if (u.hostname.includes('youtu.be')) {
+                        const id = u.pathname.slice(1);
+                        return 'https://www.youtube.com/embed/' + id + '?rel=0&autoplay=1';
+                    }
+                    if (u.hostname.includes('youtube.com')) {
+                        const v = u.searchParams.get('v');
+                        if (v) return 'https://www.youtube.com/embed/' + v + '?rel=0&autoplay=1';
+                        // Maybe already embed
+                        if (u.pathname.includes('/embed/')) return url + '?rel=0&autoplay=1';
+                    }
+                } catch (e) {
+                    // ignore
+                }
+                return null;
+            }
+
+            function isDirectVideo(url) {
+                return /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
+            }
+
+            modalEl.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const url = button?.getAttribute('data-content-url') || '';
+                const title = button?.getAttribute('data-lesson-title') || 'Bài học';
+                const container = modalEl.querySelector('.player-container');
+
+                // set title
+                const titleEl = modalEl.querySelector('.modal-title');
+                if (titleEl) titleEl.textContent = title;
+
+                if (!url) {
+                    container.innerHTML = '<div class="text-center text-muted">Không có nội dung để phát.</div>';
+                    return;
+                }
+
+                // Decide player type
+                const ytEmbed = toYouTubeEmbed(url);
+                if (ytEmbed) {
+                    container.innerHTML = '<div class="ratio ratio-16x9"><iframe src="' + ytEmbed + '" title="' + (title.replace(/"/g, '&quot;')) + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+                    return;
+                }
+
+                if (isDirectVideo(url)) {
+                    container.innerHTML = '<video controls class="w-100" playsinline controlsList="nodownload"><source src="' + url + '"></video>';
+                    return;
+                }
+
+                // Fallback: iframe (for Vimeo or other embed URLs)
+                container.innerHTML = '<div class="ratio ratio-16x9"><iframe src="' + url + '" title="' + (title.replace(/"/g, '&quot;')) + '" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>';
+            });
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                // Stop playback and cleanup
+                const container = modalEl.querySelector('.player-container');
+                if (container) {
+                    // Remove any media elements to stop playback
+                    container.innerHTML = '<div class="d-flex align-items-center justify-content-center" style="min-height:200px;"><div class="text-muted">Đang tải nội dung...</div></div>';
+                }
+            });
+        })();
+    </script>
+}
