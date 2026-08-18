@@ -1,0 +1,576 @@
+/* ========================================
+   ADMIN COURSE MANAGEMENT
+======================================== */
+
+.admin-page {
+    background: #f5f7fb;
+    min-height: calc(100vh - 70px);
+    padding: 30px 0;
+}
+
+
+/* ========================================
+   PAGE HEADER
+======================================== */
+
+.admin-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.admin-page-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.admin-page-description {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.admin-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all .25s ease;
+}
+
+.admin-btn-primary:hover {
+    color: white;
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, .25);
+}
+
+
+/* ========================================
+   STATISTICS
+======================================== */
+
+.admin-stat-card {
+    position: relative;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    border: 1px solid #eef0f4;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, .05);
+
+    transition: all .25s ease;
+
+    overflow: hidden;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, .09);
+}
+
+.admin-stat-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-stat-label {
+    margin-bottom: 7px;
+
+    color: #64748b;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.admin-stat-number {
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.admin-stat-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 25px;
+}
+
+.admin-stat-blue {
+    background: #eff6ff;
+}
+
+.admin-stat-green {
+    background: #ecfdf5;
+}
+
+.admin-stat-orange {
+    background: #fff7ed;
+}
+
+
+/* ========================================
+   COURSE TABLE CARD
+======================================== */
+
+.admin-table-card {
+    background: white;
+
+    border-radius: 16px;
+
+    border: 1px solid #eef0f4;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, .05);
+
+    overflow: hidden;
+}
+
+
+/* ========================================
+   TABLE HEADER
+======================================== */
+
+.admin-table-header {
+    padding: 20px 22px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid #eef0f4;
+}
+
+.admin-table-title {
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* ========================================
+   SEARCH
+======================================== */
+
+.admin-search {
+    position: relative;
+
+    width: 280px;
+}
+
+.admin-search input {
+    width: 100%;
+
+    height: 42px;
+
+    padding: 0 15px 0 40px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    transition: all .2s ease;
+}
+
+.admin-search input:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, .1);
+}
+
+.admin-search-icon {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #94a3b8;
+
+    font-size: 15px;
+}
+
+
+/* ========================================
+   TABLE
+======================================== */
+
+.admin-course-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.admin-course-table thead {
+    background: #f8fafc;
+}
+
+.admin-course-table th {
+    padding: 14px 18px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: .3px;
+
+    border-bottom: 1px solid #eef0f4;
+
+    white-space: nowrap;
+}
+
+.admin-course-table td {
+    padding: 16px 18px;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    vertical-align: middle;
+}
+
+.admin-course-table tbody tr {
+    transition: background .2s ease;
+}
+
+.admin-course-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.admin-course-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ========================================
+   COURSE IMAGE
+======================================== */
+
+.admin-course-image {
+    width: 75px;
+    height: 48px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    background: #f1f5f9;
+}
+
+.admin-course-image-empty {
+    width: 75px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f1f5f9;
+
+    font-size: 20px;
+}
+
+
+/* ========================================
+   COURSE NAME
+======================================== */
+
+.admin-course-name {
+    color: #1e293b;
+
+    font-weight: 600;
+
+    max-width: 300px;
+}
+
+.admin-course-instructor {
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+/* ========================================
+   PRICE
+======================================== */
+
+.admin-price {
+    color: #2563eb;
+
+    font-weight: 700;
+}
+
+.admin-free {
+    display: inline-flex;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* ========================================
+   ACTION BUTTONS
+======================================== */
+
+.admin-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 6px;
+}
+
+.admin-action-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: all .2s ease;
+}
+
+.admin-action-view {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.admin-action-view:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.admin-action-edit {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.admin-action-edit:hover {
+    background: #16a34a;
+    color: white;
+}
+
+.admin-action-delete {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.admin-action-delete:hover {
+    background: #dc2626;
+    color: white;
+}
+
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.admin-empty {
+    padding: 70px 20px;
+
+    text-align: center;
+}
+
+.admin-empty-icon {
+    font-size: 55px;
+
+    margin-bottom: 15px;
+}
+
+.admin-empty h4 {
+    margin-bottom: 8px;
+
+    color: #334155;
+
+    font-weight: 700;
+}
+
+.admin-empty p {
+    color: #94a3b8;
+
+    margin-bottom: 0;
+}
+
+
+/* ========================================
+   PAGINATION
+======================================== */
+
+.admin-pagination {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 16px 22px;
+
+    border-top: 1px solid #eef0f4;
+}
+
+.admin-pagination-info {
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 992px) {
+
+    .admin-page-header {
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+    .admin-search {
+        width: 100%;
+    }
+
+    .admin-table-header {
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .admin-page {
+        padding: 20px 0;
+    }
+
+    .admin-page-title {
+        font-size: 23px;
+    }
+
+    .admin-stat-card {
+        padding: 18px;
+    }
+
+    .admin-stat-number {
+        font-size: 25px;
+    }
+
+    .admin-course-table {
+        min-width: 850px;
+    }
+
+    .admin-table-card {
+        overflow-x: auto;
+    }
+
+}
+
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+.admin-table-card::-webkit-scrollbar {
+    height: 7px;
+}
+
+.admin-table-card::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.admin-table-card::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+
+    border-radius: 10px;
+}
+
+.admin-table-card::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

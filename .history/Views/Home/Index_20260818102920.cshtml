@@ -1,0 +1,646 @@
+﻿@model IEnumerable<LMS_DotNETCore_MVC.Models.Course>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- =========================
+     HERO SECTION
+========================= -->
+<section class="hero-section text-white rounded-4 overflow-hidden">
+    <div class="container py-5">
+        <div class="row align-items-center min-vh-50">
+
+            <div class="col-lg-7 py-4">
+                <span class="badge bg-light text-primary px-3 py-2 rounded-pill mb-3">
+                    🚀 Học tập mọi lúc, mọi nơi
+                </span>
+
+                <h1 class="display-4 fw-bold mb-4">
+                    Học tập nâng tầm
+                    <span class="text-warning">sự nghiệp.</span>
+                </h1>
+
+                <p class="lead mb-4 text-white-50">
+                    Khám phá hàng trăm khóa học chất lượng cao từ những
+                    giảng viên uy tín. Học theo tốc độ của bạn, phát triển
+                    kỹ năng thực tế và xây dựng tương lai tốt hơn.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Courses"
+                       asp-action="Index"
+                       class="btn btn-light btn-lg px-4 shadow">
+                        Khám phá khóa học
+                    </a>
+
+                    <a href="#featured-courses"
+                       class="btn btn-outline-light btn-lg px-4">
+                        Xem khóa học nổi bật
+                    </a>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-4">
+                        <h3 class="fw-bold mb-0">100+</h3>
+                        <small class="text-white-50">Khóa học</small>
+                    </div>
+
+                    <div class="col-4">
+                        <h3 class="fw-bold mb-0">50+</h3>
+                        <small class="text-white-50">Giảng viên</small>
+                    </div>
+
+                    <div class="col-4">
+                        <h3 class="fw-bold mb-0">10K+</h3>
+                        <small class="text-white-50">Học viên</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <div class="hero-image-wrapper">
+                    <img src="~/images/course-thumbnail.png"
+                         alt="Learning illustration"
+                         class="img-fluid hero-image">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="text-primary fw-semibold">DANH MỤC</span>
+
+            <h2 class="fw-bold mt-2">
+                Khám phá lĩnh vực bạn yêu thích
+            </h2>
+
+            <p class="text-muted">
+                Lựa chọn khóa học phù hợp với mục tiêu học tập và nghề nghiệp
+                của bạn.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/Courses?category=Programming"
+                   class="text-decoration-none">
+
+                    <div class="category-card text-center p-4 h-100">
+                        <div class="category-icon bg-primary-subtle text-primary">
+                            💻
+                        </div>
+
+                        <h5 class="fw-bold mt-3 mb-1">
+                            Lập trình
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Web, Mobile, Software
+                        </p>
+                    </div>
+
+                </a>
+            </div>
+
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/Courses?category=Database"
+                   class="text-decoration-none">
+
+                    <div class="category-card text-center p-4 h-100">
+                        <div class="category-icon bg-success-subtle text-success">
+                            🗄️
+                        </div>
+
+                        <h5 class="fw-bold mt-3 mb-1">
+                            Cơ sở dữ liệu
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            SQL, MySQL, SQL Server
+                        </p>
+                    </div>
+
+                </a>
+            </div>
+
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/Courses?category=Design"
+                   class="text-decoration-none">
+
+                    <div class="category-card text-center p-4 h-100">
+                        <div class="category-icon bg-warning-subtle text-warning">
+                            🎨
+                        </div>
+
+                        <h5 class="fw-bold mt-3 mb-1">
+                            Thiết kế
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            UI/UX, Figma, Photoshop
+                        </p>
+                    </div>
+
+                </a>
+            </div>
+
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/Courses?category=Business"
+                   class="text-decoration-none">
+
+                    <div class="category-card text-center p-4 h-100">
+                        <div class="category-icon bg-danger-subtle text-danger">
+                            📊
+                        </div>
+
+                        <h5 class="fw-bold mt-3 mb-1">
+                            Kinh doanh
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Marketing, Sales, Business
+                        </p>
+                    </div>
+
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================
+     FEATURED COURSES
+========================= -->
+<section id="featured-courses" class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="d-flex flex-wrap justify-content-between
+                    align-items-center mb-4">
+
+            <div>
+                <span class="text-primary fw-semibold">
+                    KHÓA HỌC
+                </span>
+
+                <h2 class="fw-bold mt-1 mb-1">
+                    Khóa học nổi bật
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Những khóa học được nhiều học viên lựa chọn
+                </p>
+            </div>
+
+            <a asp-controller="Courses"
+               asp-action="Index"
+               class="btn btn-outline-primary mt-3 mt-md-0">
+                Xem tất cả
+                <span class="ms-1">→</span>
+            </a>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var course in Model)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <div class="card course-card h-100 border-0 shadow-sm">
+
+                            <!-- Course image -->
+                            <div class="course-image-wrapper">
+
+                                <img src="@course.ImageUrl"
+                                     class="card-img-top course-image"
+                                     alt="@course.Title"
+                                     onerror="this.src='/images/course-thumbnail.png';">
+
+                                <span class="course-badge">
+                                    Nổi bật
+                                </span>
+
+                            </div>
+
+
+                            <div class="card-body d-flex flex-column p-4">
+
+                                <h5 class="card-title fw-bold">
+                                    @course.Title
+                                </h5>
+
+
+                                <p class="text-muted small mb-2">
+
+                                    <i class="bi bi-person-circle me-1"></i>
+
+                                    @if (course.Instructor != null)
+                                    {
+                                        @course.Instructor.FullName
+                                    }
+                                    else
+                                    {
+                                        <span>Đang cập nhật</span>
+                                    }
+
+                                </p>
+
+
+                                <div class="text-warning small mb-3">
+                                    ★★★★★
+                                    <span class="text-muted ms-1">
+                                        (4.8)
+                                    </span>
+                                </div>
+
+
+                                <div class="mt-auto
+                                            d-flex justify-content-between
+                                            align-items-center">
+
+                                    @if (course.Price > 0)
+                                    {
+                                        <div>
+                                            <small class="text-muted d-block">
+                                                Học phí
+                                            </small>
+
+                                            <span class="fw-bold text-primary fs-5">
+                                                @course.Price ₫
+                                            </span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <small class="text-muted d-block">
+                                                Học phí
+                                            </small>
+
+                                            <span class="fw-bold text-success fs-5">
+                                                Miễn phí
+                                            </span>
+                                        </div>
+                                    }
+
+
+                                    <a asp-controller="Courses"
+                                       asp-action="Details"
+                                       asp-route-id="@course.Id"
+                                       class="btn btn-sm btn-primary px-3">
+
+                                        Xem chi tiết
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+
+                    <div class="text-center py-5">
+
+                        <div class="display-4 mb-3">
+                            📚
+                        </div>
+
+                        <h4>
+                            Chưa có khóa học
+                        </h4>
+
+                        <p class="text-muted">
+                            Hiện tại chưa có khóa học nào được hiển thị.
+                        </p>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     WHY CHOOSE US
+========================= -->
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <span class="text-primary fw-semibold">
+                VÌ SAO CHỌN CHÚNG TÔI?
+            </span>
+
+            <h2 class="fw-bold mt-2">
+                Học tập hiệu quả hơn cùng chúng tôi
+            </h2>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="text-center p-4">
+
+                    <div class="feature-icon">
+                        🎓
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Giảng viên chất lượng
+                    </h5>
+
+                    <p class="text-muted small">
+                        Học trực tiếp từ các giảng viên có kinh nghiệm
+                        thực tế trong ngành.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="text-center p-4">
+
+                    <div class="feature-icon">
+                        📱
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Học mọi lúc
+                    </h5>
+
+                    <p class="text-muted small">
+                        Truy cập khóa học trên máy tính, điện thoại
+                        và học bất cứ khi nào bạn muốn.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="text-center p-4">
+
+                    <div class="feature-icon">
+                        🏆
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Chứng chỉ
+                    </h5>
+
+                    <p class="text-muted small">
+                        Nhận chứng chỉ sau khi hoàn thành khóa học
+                        để bổ sung vào hồ sơ cá nhân.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="text-center p-4">
+
+                    <div class="feature-icon">
+                        💬
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Hỗ trợ học viên
+                    </h5>
+
+                    <p class="text-muted small">
+                        Được hỗ trợ trong quá trình học và giải đáp
+                        các vấn đề liên quan đến khóa học.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================= -->
+<section class="container mb-5">
+
+    <div class="cta-section rounded-4 text-white text-center p-5">
+
+        <h2 class="fw-bold mb-3">
+            Sẵn sàng bắt đầu hành trình học tập?
+        </h2>
+
+        <p class="lead mb-4">
+            Chọn một khóa học và bắt đầu phát triển kỹ năng của bạn ngay hôm nay.
+        </p>
+
+        <a asp-controller="Courses"
+           asp-action="Index"
+           class="btn btn-light btn-lg px-5">
+            Bắt đầu học ngay
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE STYLE
+========================= -->
+<style>
+
+    .hero-section {
+        background: linear-gradient(
+            135deg,
+            #0d6efd 0%,
+            #6610f2 100%
+        );
+    }
+
+    .min-vh-50 {
+        min-height: 520px;
+    }
+
+    .hero-image-wrapper {
+        position: relative;
+        padding: 25px;
+    }
+
+    .hero-image {
+        max-height: 380px;
+        object-fit: contain;
+        filter: drop-shadow(0 20px 25px rgba(0,0,0,.25));
+    }
+
+
+    /* Categories */
+
+    .category-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 16px;
+        transition: all .3s ease;
+    }
+
+    .category-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0,0,0,.1);
+        border-color: transparent;
+    }
+
+    .category-icon {
+        width: 65px;
+        height: 65px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        font-size: 30px;
+    }
+
+
+    /* Course */
+
+    .course-card {
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all .3s ease;
+    }
+
+    .course-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 15px 35px rgba(0,0,0,.12) !important;
+    }
+
+    .course-image-wrapper {
+        position: relative;
+        height: 210px;
+        overflow: hidden;
+    }
+
+    .course-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .4s ease;
+    }
+
+    .course-card:hover .course-image {
+        transform: scale(1.05);
+    }
+
+    .course-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #fff;
+        color: #0d6efd;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 50px;
+        box-shadow: 0 3px 10px rgba(0,0,0,.15);
+    }
+
+
+    /* Features */
+
+    .feature-icon {
+        width: 75px;
+        height: 75px;
+        margin: auto;
+        border-radius: 50%;
+        background: #f0f6ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+    }
+
+
+    /* CTA */
+
+    .cta-section {
+        background: linear-gradient(
+            135deg,
+            #0d6efd,
+            #6610f2
+        );
+        box-shadow: 0 15px 40px rgba(13,110,253,.2);
+    }
+
+
+    /* Responsive */
+
+    @@media (max-width: 768px) {
+
+        .min-vh-50 {
+            min-height: auto;
+        }
+
+        .hero-section {
+            border-radius: 0 !important;
+        }
+
+        .hero-section h1 {
+            font-size: 2.4rem;
+        }
+
+        .course-image-wrapper {
+            height: 190px;
+        }
+
+    }
+
+</style>

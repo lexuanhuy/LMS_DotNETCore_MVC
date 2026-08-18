@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - LMS Admin</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/admin.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+</head>
+
+<body class="admin-body">
+
+    <!-- SIDEBAR -->
+
+    <aside class="admin-sidebar">
+
+        <!-- LOGO -->
+
+        <div class="admin-logo">
+
+            <div class="admin-logo-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div>
+                <div class="admin-logo-title">
+                    LMS
+                </div>
+
+                <div class="admin-logo-subtitle">
+                    ADMIN PANEL
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <nav class="admin-menu">
+
+            <div class="admin-menu-label">
+                QUẢN LÝ
+            </div>
+
+
+            <!-- Dashboard -->
+
+            <a asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Index"
+               class="admin-menu-item">
+
+                <i class="bi bi-grid-1x2-fill"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Courses -->
+
+            <a href="/Admin/Courses"
+   class="admin-menu-item">
+
+    <i class="bi bi-book-fill"></i>
+
+    <span>
+        Khóa học
+    </span>
+
+</a>
+
+
+            <!-- Users -->
+
+            <a href="#"
+               class="admin-menu-item">
+
+                <i class="bi bi-people-fill"></i>
+
+                <span>
+                    Người dùng
+                </span>
+
+            </a>
+
+
+            <!-- Instructors -->
+
+            <a href="#"
+               class="admin-menu-item">
+
+                <i class="bi bi-person-workspace"></i>
+
+                <span>
+                    Giảng viên
+                </span>
+
+            </a>
+
+
+            <div class="admin-menu-label mt-4">
+                HỆ THỐNG
+            </div>
+
+
+            <!-- Settings -->
+
+            <a href="#"
+               class="admin-menu-item">
+
+                <i class="bi bi-gear-fill"></i>
+
+                <span>
+                    Cài đặt
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- BOTTOM -->
+
+        <div class="admin-sidebar-bottom">
+
+            <a href="/"
+               class="admin-menu-item">
+
+                <i class="bi bi-house-fill"></i>
+
+                <span>
+                    Về trang chủ
+                </span>
+
+            </a>
+
+
+            <a href="#"
+               class="admin-menu-item admin-logout">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>
+                    Đăng xuất
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="admin-main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="admin-topbar">
+
+            <div>
+
+                <button id="sidebarToggle"
+                        class="admin-mobile-toggle">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="admin-user">
+
+                <div class="admin-user-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+
+                <div class="admin-user-info">
+
+                    <strong>
+                        Admin
+                    </strong>
+
+                    <small>
+                        Quản trị viên
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="admin-content">
+
+            @RenderBody()
+
+        </div>
+
+
+    </main>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+
+        const toggle =
+            document.getElementById("sidebarToggle");
+
+        const sidebar =
+            document.querySelector(".admin-sidebar");
+
+        toggle?.addEventListener("click", function () {
+
+            sidebar.classList.toggle("show");
+
+        });
+
+
+        document
+            .querySelectorAll(".admin-menu-item")
+            .forEach(function (item) {
+
+                const currentPath =
+                    window.location.pathname.toLowerCase();
+
+                const href =
+                    item.getAttribute("href");
+
+                if (
+                    href &&
+                    href !== "#" &&
+                    currentPath === href.toLowerCase()
+                ) {
+                    item.classList.add("active");
+                }
+
+            });
+
+    </script>
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false
+    )
+
+</body>
+
+</html>

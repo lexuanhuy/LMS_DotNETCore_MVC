@@ -1,0 +1,708 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="admin-dashboard">
+
+    <!-- PAGE HEADER -->
+    <div class="admin-page-header mb-4">
+
+        <div>
+            <h1 class="admin-page-title">
+                Dashboard
+            </h1>
+
+            <p class="admin-page-description">
+                Tổng quan hoạt động của hệ thống LMS
+            </p>
+        </div>
+
+        <div class="dashboard-date">
+            <i class="bi bi-calendar3"></i>
+            @DateTime.Now.ToString("dd/MM/yyyy")
+        </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- COURSES -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-top">
+
+                    <div>
+                        <div class="dashboard-stat-label">
+                            Tổng khóa học
+                        </div>
+
+                        <div class="dashboard-stat-number">
+                            24
+                        </div>
+                    </div>
+
+                    <div class="dashboard-stat-icon stat-blue">
+                        <i class="bi bi-book-fill"></i>
+                    </div>
+
+                </div>
+
+                <div class="dashboard-stat-bottom">
+                    <span class="stat-up">
+                        <i class="bi bi-arrow-up"></i>
+                        12%
+                    </span>
+
+                    <span>
+                        so với tháng trước
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENTS -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-top">
+
+                    <div>
+                        <div class="dashboard-stat-label">
+                            Học viên
+                        </div>
+
+                        <div class="dashboard-stat-number">
+                            1,248
+                        </div>
+                    </div>
+
+                    <div class="dashboard-stat-icon stat-green">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                </div>
+
+                <div class="dashboard-stat-bottom">
+                    <span class="stat-up">
+                        <i class="bi bi-arrow-up"></i>
+                        8.5%
+                    </span>
+
+                    <span>
+                        so với tháng trước
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INSTRUCTORS -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-top">
+
+                    <div>
+                        <div class="dashboard-stat-label">
+                            Giảng viên
+                        </div>
+
+                        <div class="dashboard-stat-number">
+                            36
+                        </div>
+                    </div>
+
+                    <div class="dashboard-stat-icon stat-orange">
+                        <i class="bi bi-person-workspace"></i>
+                    </div>
+
+                </div>
+
+                <div class="dashboard-stat-bottom">
+                    <span class="stat-up">
+                        <i class="bi bi-arrow-up"></i>
+                        5.2%
+                    </span>
+
+                    <span>
+                        so với tháng trước
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVENUE -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-top">
+
+                    <div>
+                        <div class="dashboard-stat-label">
+                            Doanh thu
+                        </div>
+
+                        <div class="dashboard-stat-number dashboard-revenue">
+                            48.6M
+                        </div>
+                    </div>
+
+                    <div class="dashboard-stat-icon stat-purple">
+                        <i class="bi bi-cash-stack"></i>
+                    </div>
+
+                </div>
+
+                <div class="dashboard-stat-bottom">
+                    <span class="stat-up">
+                        <i class="bi bi-arrow-up"></i>
+                        15.8%
+                    </span>
+
+                    <span>
+                        so với tháng trước
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN DASHBOARD -->
+
+    <div class="row g-4">
+
+
+        <!-- REVENUE CHART -->
+
+        <div class="col-xl-8">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-header">
+
+                    <div>
+                        <h3>
+                            Doanh thu
+                        </h3>
+
+                        <p>
+                            Thống kê doanh thu trong 7 tháng gần nhất
+                        </p>
+                    </div>
+
+                    <select class="dashboard-select">
+
+                        <option>7 tháng gần nhất</option>
+                        <option>30 ngày gần nhất</option>
+                        <option>12 tháng</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="revenue-chart">
+
+                    <div class="chart-y-axis">
+
+                        <span>60M</span>
+                        <span>45M</span>
+                        <span>30M</span>
+                        <span>15M</span>
+                        <span>0</span>
+
+                    </div>
+
+
+                    <div class="chart-area">
+
+                        <div class="chart-grid"></div>
+
+                        <div class="chart-bars">
+
+                            <div class="chart-column">
+                                <div class="chart-bar"
+                                     style="height:42%;"></div>
+                                <span>Feb</span>
+                            </div>
+
+                            <div class="chart-column">
+                                <div class="chart-bar"
+                                     style="height:55%;"></div>
+                                <span>Mar</span>
+                            </div>
+
+                            <div class="chart-column">
+                                <div class="chart-bar"
+                                     style="height:48%;"></div>
+                                <span>Apr</span>
+                            </div>
+
+                            <div class="chart-column">
+                                <div class="chart-bar"
+                                     style="height:68%;"></div>
+                                <span>May</span>
+                            </div>
+
+                            <div class="chart-column">
+                                <div class="chart-bar"
+                                     style="height:61%;"></div>
+                                <span>Jun</span>
+                            </div>
+
+                            <div class="chart-column">
+                                <div class="chart-bar"
+                                     style="height:82%;"></div>
+                                <span>Jul</span>
+                            </div>
+
+                            <div class="chart-column">
+                                <div class="chart-bar active"
+                                     style="height:94%;"></div>
+                                <span>Aug</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTION -->
+
+        <div class="col-xl-4">
+
+            <div class="dashboard-card quick-action-card">
+
+                <div class="dashboard-card-header">
+
+                    <div>
+                        <h3>
+                            Thao tác nhanh
+                        </h3>
+
+                        <p>
+                            Quản lý hệ thống
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <a asp-area="Admin"
+                       asp-controller="Courses"
+                       asp-action="Create"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Thêm khóa học
+                            </strong>
+
+                            <small>
+                                Tạo khóa học mới
+                            </small>
+                        </div>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                    <a href="#"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+                            <i class="bi bi-person-plus-fill"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Thêm giảng viên
+                            </strong>
+
+                            <small>
+                                Tạo tài khoản giảng viên
+                            </small>
+                        </div>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                    <a href="#"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Quản lý học viên
+                            </strong>
+
+                            <small>
+                                Xem danh sách học viên
+                            </small>
+                        </div>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                    <a asp-area="Admin"
+                       asp-controller="Courses"
+                       asp-action="Index"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+                            <i class="bi bi-book-fill"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Quản lý khóa học
+                            </strong>
+
+                            <small>
+                                Xem tất cả khóa học
+                            </small>
+                        </div>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT COURSES -->
+
+        <div class="col-xl-8">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-header">
+
+                    <div>
+                        <h3>
+                            Khóa học mới nhất
+                        </h3>
+
+                        <p>
+                            Các khóa học vừa được thêm vào hệ thống
+                        </p>
+                    </div>
+
+                    <a asp-area="Admin"
+                       asp-controller="Courses"
+                       asp-action="Index"
+                       class="dashboard-view-all">
+
+                        Xem tất cả
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+                <div class="recent-course-list">
+
+
+                    <div class="recent-course-item">
+
+                        <div class="recent-course-image">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+
+                        <div class="recent-course-info">
+
+                            <strong>
+                                Lập trình C# cơ bản
+                            </strong>
+
+                            <span>
+                                Nguyễn Văn A
+                            </span>
+
+                        </div>
+
+                        <div class="recent-course-price">
+                            499.000 ₫
+                        </div>
+
+                        <span class="course-status active">
+                            Đang hoạt động
+                        </span>
+
+                    </div>
+
+
+                    <div class="recent-course-item">
+
+                        <div class="recent-course-image">
+                            <i class="bi bi-filetype-js"></i>
+                        </div>
+
+                        <div class="recent-course-info">
+
+                            <strong>
+                                JavaScript từ cơ bản đến nâng cao
+                            </strong>
+
+                            <span>
+                                Trần Văn B
+                            </span>
+
+                        </div>
+
+                        <div class="recent-course-price">
+                            399.000 ₫
+                        </div>
+
+                        <span class="course-status active">
+                            Đang hoạt động
+                        </span>
+
+                    </div>
+
+
+                    <div class="recent-course-item">
+
+                        <div class="recent-course-image">
+                            <i class="bi bi-database-fill"></i>
+                        </div>
+
+                        <div class="recent-course-info">
+
+                            <strong>
+                                SQL Server thực chiến
+                            </strong>
+
+                            <span>
+                                Lê Văn C
+                            </span>
+
+                        </div>
+
+                        <div class="recent-course-price">
+                            Miễn phí
+                        </div>
+
+                        <span class="course-status pending">
+                            Chờ duyệt
+                        </span>
+
+                    </div>
+
+
+                    <div class="recent-course-item">
+
+                        <div class="recent-course-image">
+                            <i class="bi bi-braces"></i>
+                        </div>
+
+                        <div class="recent-course-info">
+
+                            <strong>
+                                ASP.NET Core MVC
+                            </strong>
+
+                            <span>
+                                Phạm Văn D
+                            </span>
+
+                        </div>
+
+                        <div class="recent-course-price">
+                            599.000 ₫
+                        </div>
+
+                        <span class="course-status active">
+                            Đang hoạt động
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT ACTIVITY -->
+
+        <div class="col-xl-4">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-header">
+
+                    <div>
+
+                        <h3>
+                            Hoạt động gần đây
+                        </h3>
+
+                        <p>
+                            Hoạt động mới nhất
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity-list">
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon activity-blue">
+                            <i class="bi bi-person-plus-fill"></i>
+                        </div>
+
+                        <div class="activity-content">
+
+                            <strong>
+                                Học viên mới
+                            </strong>
+
+                            <span>
+                                Nguyễn Hải Đăng vừa đăng ký
+                            </span>
+
+                            <small>
+                                5 phút trước
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon activity-green">
+                            <i class="bi bi-cart-check-fill"></i>
+                        </div>
+
+                        <div class="activity-content">
+
+                            <strong>
+                                Đăng ký khóa học
+                            </strong>
+
+                            <span>
+                                Một học viên đăng ký C#
+                            </span>
+
+                            <small>
+                                18 phút trước
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon activity-orange">
+                            <i class="bi bi-book-fill"></i>
+                        </div>
+
+                        <div class="activity-content">
+
+                            <strong>
+                                Khóa học mới
+                            </strong>
+
+                            <span>
+                                ASP.NET Core MVC được tạo
+                            </span>
+
+                            <small>
+                                1 giờ trước
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon activity-purple">
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+
+                        <div class="activity-content">
+
+                            <strong>
+                                Đánh giá mới
+                            </strong>
+
+                            <span>
+                                Học viên đánh giá 5 sao
+                            </span>
+
+                            <small>
+                                2 giờ trước
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,446 @@
+@model IEnumerable<LMS_DotNETCore_MVC.Models.Course>
+
+@{
+    ViewData["Title"] = "Quản lý khóa học";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+
+    <!-- PAGE HEADER -->
+
+    <div class="admin-page-header">
+
+        <div>
+
+            <h1 class="admin-page-title">
+                Quản lý khóa học
+            </h1>
+
+            <p class="admin-page-description">
+                Quản lý danh sách khóa học trên hệ thống LMS
+            </p>
+
+        </div>
+
+
+        <a asp-area="Admin"
+           asp-controller="Courses"
+           asp-action="Create"
+           class="admin-btn-primary">
+
+            <i class="bi bi-plus-lg"></i>
+
+            Thêm khóa học
+
+        </a>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="row g-4">
+
+        <!-- TOTAL -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Tổng khóa học
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            @Model.Count()
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-blue">
+                        <i class="bi bi-book-fill text-primary"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FREE -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Khóa học miễn phí
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            @Model.Count(c => c.Price == 0)
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-green">
+                        <i class="bi bi-gift-fill text-success"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAID -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Khóa học trả phí
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            @Model.Count(c => c.Price > 0)
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-orange">
+                        <i class="bi bi-currency-dollar text-warning"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="admin-table-card">
+
+        <!-- TABLE HEADER -->
+
+        <div class="admin-table-header">
+
+            <h3 class="admin-table-title">
+                Danh sách khóa học
+            </h3>
+
+
+            <div class="admin-search">
+
+                <i class="bi bi-search admin-search-icon"></i>
+
+                <input type="text"
+                       id="courseSearch"
+                       placeholder="Tìm kiếm khóa học..." />
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-responsive">
+
+            <table class="admin-course-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Hình ảnh
+                        </th>
+
+                        <th>
+                            Khóa học
+                        </th>
+
+                        <th>
+                            Giảng viên
+                        </th>
+
+                        <th>
+                            Giá
+                        </th>
+
+                        <th class="text-center">
+                            Thao tác
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="courseTable">
+
+                    @if (Model != null && Model.Any())
+                    {
+
+                        foreach (var course in Model)
+                        {
+
+                            <tr>
+
+                                <!-- ID -->
+
+                                <td>
+                                    <strong>
+                                        #@course.Id
+                                    </strong>
+                                </td>
+
+
+                                <!-- IMAGE -->
+
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(course.ImageUrl))
+                                    {
+
+                                        <img src="@course.ImageUrl"
+                                             class="admin-course-image"
+                                             alt="@course.Title"
+                                             onerror="this.style.display='none';" />
+
+                                    }
+                                    else
+                                    {
+
+                                        <div class="admin-course-image d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-image text-muted"></i>
+                                        </div>
+
+                                    }
+
+                                </td>
+
+
+                                <!-- COURSE -->
+
+                                <td>
+
+                                    <div class="admin-course-name">
+                                        @course.Title
+                                    </div>
+
+                                </td>
+
+
+                                <!-- INSTRUCTOR -->
+
+                                <td>
+
+                                    @if (course.Instructor != null)
+                                    {
+
+                                        <span class="admin-course-instructor">
+
+                                            <i class="bi bi-person me-1"></i>
+
+                                            @course.Instructor.FullName
+
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="text-muted">
+                                            Chưa có giảng viên
+                                        </span>
+
+                                    }
+
+                                </td>
+
+
+                                <!-- PRICE -->
+
+                                <td>
+
+                                    @if (course.Price > 0)
+                                    {
+
+                                        <span class="admin-price">
+                                            @course.Price ₫
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="admin-free">
+                                            Miễn phí
+                                        </span>
+
+                                    }
+
+                                </td>
+
+
+                                <!-- ACTION -->
+
+                                <td>
+
+                                    <div class="admin-actions">
+
+                                        <!-- VIEW -->
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Courses"
+                                           asp-action="Details"
+                                           asp-route-id="@course.Id"
+                                           class="admin-action-btn admin-action-view"
+                                           title="Xem">
+
+                                            <i class="bi bi-eye-fill"></i>
+
+                                        </a>
+
+
+                                        <!-- EDIT -->
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Courses"
+                                           asp-action="Edit"
+                                           asp-route-id="@course.Id"
+                                           class="admin-action-btn admin-action-edit"
+                                           title="Sửa">
+
+                                            <i class="bi bi-pencil-fill"></i>
+
+                                        </a>
+
+
+                                        <!-- DELETE -->
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Courses"
+                                           asp-action="Delete"
+                                           asp-route-id="@course.Id"
+                                           class="admin-action-btn admin-action-delete"
+                                           title="Xóa">
+
+                                            <i class="bi bi-trash-fill"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <tr>
+
+                            <td colspan="6">
+
+                                <div class="text-center py-5">
+
+                                    <div style="font-size:50px;">
+                                        📚
+                                    </div>
+
+                                    <h5 class="mt-3">
+                                        Chưa có khóa học
+                                    </h5>
+
+                                    <p class="text-muted">
+                                        Hệ thống chưa có khóa học nào.
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        const searchInput =
+            document.getElementById("courseSearch");
+
+        const tableRows =
+            document.querySelectorAll("#courseTable tr");
+
+
+        searchInput?.addEventListener("keyup", function () {
+
+            const keyword =
+                this.value.toLowerCase().trim();
+
+
+            tableRows.forEach(function (row) {
+
+                const text =
+                    row.innerText.toLowerCase();
+
+                if (text.includes(keyword)) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+}

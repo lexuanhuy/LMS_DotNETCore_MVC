@@ -1,0 +1,193 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div>
+
+    <div class="admin-page-header">
+
+        <div>
+
+            <h1 class="admin-page-title">
+                Dashboard
+            </h1>
+
+            <p class="admin-page-description">
+                Tổng quan hệ thống LMS
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- COURSES -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Khóa học
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            120
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-blue">
+                        <i class="bi bi-book-fill text-primary"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- USERS -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Người dùng
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            1,250
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-green">
+                        <i class="bi bi-people-fill text-success"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INSTRUCTORS -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Giảng viên
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            56
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-orange">
+                        <i class="bi bi-person-workspace text-warning"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVENUE -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+
+                        <div class="admin-stat-label">
+                            Doanh thu
+                        </div>
+
+                        <h2 class="admin-stat-number"
+                            style="font-size:24px;">
+
+                            125M
+
+                        </h2>
+
+                    </div>
+
+                    <div class="admin-stat-icon"
+                         style="background:#fef2f2;">
+
+                        <i class="bi bi-cash-stack text-danger"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WELCOME -->
+
+    <div class="admin-table-card mt-4">
+
+        <div class="p-5 text-center">
+
+            <div style="font-size:60px;">
+                👋
+            </div>
+
+            <h3 class="fw-bold mt-3">
+                Chào mừng đến LMS Admin
+            </h3>
+
+            <p class="text-muted">
+                Tại đây bạn có thể quản lý khóa học,
+                người dùng, giảng viên và các nội dung
+                của hệ thống.
+            </p>
+
+            <a asp-area="Admin"
+               asp-controller="Courses"
+               asp-action="Index"
+               class="admin-btn-primary">
+
+                <i class="bi bi-book"></i>
+
+                Quản lý khóa học
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
