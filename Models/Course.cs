@@ -9,29 +9,32 @@ namespace LMS_DotNETCore_MVC.Models
         [Key]
         public int Id { get; set; }
 
-        [Required, MaxLength(200)]
-        public string Title { get; set; }
+        [Required]
+        [MaxLength(200)]
+        public string Title { get; set; } = string.Empty;
 
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-        public decimal? Price { get; set; } // Giá khóa học (nếu có)
+        public decimal? Price { get; set; }
 
-        public string? ImageUrl { get; set; } // Ảnh bìa khóa học
+        public string? ImageUrl { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Khóa ngoại liên kết đến Giảng viên (User)
+        // Giảng viên
         [Required]
-        public string InstructorId { get; set; }
+        public string InstructorId { get; set; } = string.Empty;
 
-        [ForeignKey("InstructorId")]
-        public ApplicationUser Instructor { get; set; }
+        [ForeignKey(nameof(InstructorId))]
+        public ApplicationUser? Instructor { get; set; }
 
-        // Quan hệ: Một Khóa học có nhiều Bài học
+        // Bài học
         public ICollection<Lesson> Lessons { get; set; }
+            = new List<Lesson>();
 
-        // Quan hệ: Một Khóa học có nhiều Học viên đăng ký
+        // Học viên đăng ký
         public ICollection<Enrollment> Enrollments { get; set; }
+            = new List<Enrollment>();
     }
 }

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LMS_DotNETCore_MVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ab14ba91d2c5a20e8822bff0178b047ea0169cb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96db83e2acbec167a4d3fc77d1fa3d7ddbd99e70")]
 [assembly: System.Reflection.AssemblyProductAttribute("LMS_DotNETCore_MVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LMS_DotNETCore_MVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

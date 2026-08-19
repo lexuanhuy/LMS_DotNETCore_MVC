@@ -1,0 +1,1168 @@
+@model IEnumerable<LMS_DotNETCore_MVC.Data.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Quản lý giảng viên";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var instructors = Model?.ToList() ?? new List<LMS_DotNETCore_MVC.Data.ApplicationUser>();
+}
+
+<div class="admin-instructors-page">
+
+    <!-- PAGE HEADER -->
+    <div class="admin-page-header">
+
+        <div>
+            <h1 class="admin-page-title">
+                Quản lý giảng viên
+            </h1>
+
+            <p class="admin-page-description">
+                Quản lý thông tin và tài khoản giảng viên trên hệ thống LMS
+            </p>
+        </div>
+
+        <button type="button"
+                class="admin-btn-primary"
+                onclick="openInstructorModal()">
+
+            <i class="bi bi-person-plus-fill"></i>
+
+            Thêm giảng viên
+
+        </button>
+
+    </div>
+
+
+    <!-- THÔNG BÁO -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm"
+             role="alert">
+
+            <i class="bi bi-check-circle-fill me-2"></i>
+
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm"
+             role="alert">
+
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+            @TempData["Error"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- STATISTICS -->
+    <div class="row g-4 mb-4">
+
+        <!-- TOTAL -->
+        <div class="col-xl-4 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+                        <div class="admin-stat-label">
+                            Tổng giảng viên
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            @instructors.Count
+                        </h2>
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-blue">
+                        <i class="bi bi-person-workspace text-primary"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="col-xl-4 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+                        <div class="admin-stat-label">
+                            Có email
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            @instructors.Count(x => !string.IsNullOrEmpty(x.Email))
+                        </h2>
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-green">
+                        <i class="bi bi-envelope-fill text-success"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PHONE -->
+        <div class="col-xl-4 col-md-6">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-content">
+
+                    <div>
+                        <div class="admin-stat-label">
+                            Có số điện thoại
+                        </div>
+
+                        <h2 class="admin-stat-number">
+                            @instructors.Count(x => !string.IsNullOrEmpty(x.PhoneNumber))
+                        </h2>
+                    </div>
+
+                    <div class="admin-stat-icon admin-stat-orange">
+                        <i class="bi bi-telephone-fill text-warning"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE CARD -->
+    <div class="admin-table-card">
+
+        <!-- TABLE HEADER -->
+        <div class="admin-table-header">
+
+            <div>
+                <h3 class="admin-table-title">
+                    Danh sách giảng viên
+                </h3>
+
+                <small class="text-muted">
+                    @instructors.Count giảng viên
+                </small>
+            </div>
+
+
+            <!-- SEARCH -->
+            <div class="admin-search">
+
+                <i class="bi bi-search admin-search-icon"></i>
+
+                <input type="text"
+                       id="instructorSearch"
+                       placeholder="Tìm kiếm giảng viên..." />
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="table-responsive">
+
+            <table class="admin-course-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Giảng viên
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Số điện thoại
+                        </th>
+
+                        <th>
+                            Mô tả
+                        </th>
+
+                        <th class="text-center">
+                            Thao tác
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="instructorTable">
+
+                    @if (instructors.Any())
+                    {
+                        var number = 1;
+
+                        foreach (var instructor in instructors)
+                        {
+                            <tr>
+
+                                <!-- STT -->
+                                <td>
+                                    <strong>
+                                        @number
+                                    </strong>
+                                </td>
+
+
+                                <!-- GIẢNG VIÊN -->
+                                <td>
+
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div class="instructor-avatar">
+
+                                            <i class="bi bi-person-fill"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="admin-course-name">
+                                                @(string.IsNullOrEmpty(instructor.FullName)
+                                                    ? "Chưa cập nhật"
+                                                    : instructor.FullName)
+                                            </div>
+
+                                            <small class="text-muted">
+                                                Giảng viên
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- EMAIL -->
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(instructor.Email))
+                                    {
+                                        <span>
+                                            <i class="bi bi-envelope me-1"></i>
+                                            @instructor.Email
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Chưa cập nhật
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- PHONE -->
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(instructor.PhoneNumber))
+                                    {
+                                        <span>
+                                            <i class="bi bi-telephone me-1"></i>
+                                            @instructor.PhoneNumber
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Chưa cập nhật
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- DESCRIPTION -->
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(instructor.Description))
+                                    {
+                                        var description = instructor.Description;
+
+                                        if (description.Length > 50)
+                                        {
+                                            description = description.Substring(0, 50) + "...";
+                                        }
+
+                                        <span title="@instructor.Description">
+                                            @description
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Chưa có mô tả
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- ACTION -->
+                                <td>
+
+                                    <div class="admin-actions">
+
+                                        <!-- VIEW -->
+                                        <button type="button"
+                                                class="admin-action-btn admin-action-view"
+                                                title="Xem thông tin"
+                                                onclick="viewInstructor(
+                                                    '@instructor.FullName',
+                                                    '@instructor.Email',
+                                                    '@instructor.PhoneNumber',
+                                                    '@instructor.Description'
+                                                )">
+
+                                            <i class="bi bi-eye-fill"></i>
+
+                                        </button>
+
+
+                                        <!-- EDIT -->
+                                        <button type="button"
+                                                class="admin-action-btn admin-action-edit"
+                                                title="Sửa"
+                                                onclick="editInstructor(
+                                                    '@instructor.Id',
+                                                    '@instructor.FullName',
+                                                    '@instructor.Email',
+                                                    '@instructor.PhoneNumber',
+                                                    '@instructor.Description'
+                                                )">
+
+                                            <i class="bi bi-pencil-fill"></i>
+
+                                        </button>
+
+
+                                        <!-- DELETE -->
+                                        <button type="button"
+                                                class="admin-action-btn admin-action-delete"
+                                                title="Xóa"
+                                                onclick="deleteInstructor(
+                                                    '@instructor.Id',
+                                                    '@instructor.FullName'
+                                                )">
+
+                                            <i class="bi bi-trash-fill"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            number++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6">
+
+                                <div class="text-center py-5">
+
+                                    <div style="font-size: 50px;">
+                                        👨‍🏫
+                                    </div>
+
+                                    <h5 class="mt-3">
+                                        Chưa có giảng viên
+                                    </h5>
+
+                                    <p class="text-muted">
+                                        Hệ thống chưa có tài khoản giảng viên nào.
+                                    </p>
+
+                                    <button type="button"
+                                            class="admin-btn-primary"
+                                            onclick="openInstructorModal()">
+
+                                        <i class="bi bi-person-plus-fill"></i>
+
+                                        Thêm giảng viên
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL THÊM GIẢNG VIÊN -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="instructorModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-person-plus-fill text-primary me-2"></i>
+
+                    <span id="modalTitle">
+                        Thêm giảng viên
+                    </span>
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <form id="instructorForm"
+                  method="post"
+                  asp-area="Admin"
+                  asp-controller="Instructors"
+                  asp-action="Create">
+
+                @Html.AntiForgeryToken()
+
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           id="instructorId"
+                           name="id" />
+
+
+                    <!-- HỌ TÊN -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Họ và tên
+                        </label>
+
+                        <input type="text"
+                               id="fullName"
+                               name="FullName"
+                               class="form-control"
+                               placeholder="Nhập họ và tên giảng viên"
+                               required />
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <!-- EMAIL -->
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Email
+                            </label>
+
+                            <input type="email"
+                                   id="email"
+                                   name="Email"
+                                   class="form-control"
+                                   placeholder="example@gmail.com"
+                                   required />
+
+                        </div>
+
+
+                        <!-- PHONE -->
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Số điện thoại
+                            </label>
+
+                            <input type="text"
+                                   id="phoneNumber"
+                                   name="PhoneNumber"
+                                   class="form-control"
+                                   placeholder="Nhập số điện thoại" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="mb-3"
+                         id="passwordGroup">
+
+                        <label class="form-label fw-semibold">
+                            Mật khẩu
+                        </label>
+
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Nhập mật khẩu"
+                               minlength="6" />
+
+                        <small class="text-muted">
+                            Mật khẩu dùng để đăng nhập tài khoản giảng viên.
+                        </small>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Mô tả giảng viên
+                        </label>
+
+                        <textarea id="description"
+                                  name="Description"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Nhập thông tin giới thiệu, chuyên môn, kinh nghiệm của giảng viên..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        Hủy
+
+                    </button>
+
+
+                    <button type="submit"
+                            class="admin-btn-primary">
+
+                        <i class="bi bi-check-lg"></i>
+
+                        <span id="submitText">
+                            Thêm giảng viên
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL XEM GIẢNG VIÊN -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="viewInstructorModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-person-vcard-fill text-primary me-2"></i>
+
+                    Thông tin giảng viên
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="text-center mb-4">
+
+                    <div class="instructor-avatar instructor-avatar-large">
+
+                        <i class="bi bi-person-fill"></i>
+
+                    </div>
+
+                    <h4 id="viewFullName"
+                        class="mt-3 mb-1">
+                    </h4>
+
+                    <span class="badge bg-primary">
+                        Giảng viên
+                    </span>
+
+                </div>
+
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <div class="p-3 bg-light rounded">
+
+                            <small class="text-muted">
+                                Email
+                            </small>
+
+                            <div id="viewEmail"
+                                 class="fw-semibold mt-1">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="p-3 bg-light rounded">
+
+                            <small class="text-muted">
+                                Số điện thoại
+                            </small>
+
+                            <div id="viewPhone"
+                                 class="fw-semibold mt-1">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-12">
+
+                        <div class="p-3 bg-light rounded">
+
+                            <small class="text-muted">
+                                Mô tả
+                            </small>
+
+                            <div id="viewDescription"
+                                 class="mt-2">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Đóng
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL XÓA -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="deleteInstructorModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title text-danger">
+
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                    Xác nhận xóa
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body text-center">
+
+                <div style="font-size: 55px;">
+                    🗑️
+                </div>
+
+                <p class="mt-3 mb-1">
+                    Bạn có chắc chắn muốn xóa giảng viên
+                </p>
+
+                <strong id="deleteInstructorName">
+                </strong>
+
+                <p class="text-muted small mt-2">
+                    Thao tác này không thể hoàn tác.
+                </p>
+
+            </div>
+
+
+            <div class="modal-footer justify-content-center">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Hủy
+
+                </button>
+
+
+                <form id="deleteInstructorForm"
+                      method="post"
+                      asp-area="Admin"
+                      asp-controller="Instructors"
+                      asp-action="Delete">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           id="deleteInstructorId"
+                           name="id" />
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bi bi-trash-fill me-1"></i>
+
+                        Xóa giảng viên
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        // ============================================
+        // TÌM KIẾM
+        // ============================================
+
+        const searchInput =
+            document.getElementById("instructorSearch");
+
+        const tableRows =
+            document.querySelectorAll("#instructorTable tr");
+
+
+        searchInput?.addEventListener("keyup", function () {
+
+            const keyword =
+                this.value.toLowerCase().trim();
+
+            tableRows.forEach(function (row) {
+
+                const text =
+                    row.innerText.toLowerCase();
+
+                row.style.display =
+                    text.includes(keyword) ? "" : "none";
+
+            });
+
+        });
+
+
+        // ============================================
+        // THÊM GIẢNG VIÊN
+        // ============================================
+
+        function openInstructorModal() {
+
+            document.getElementById("modalTitle").innerText =
+                "Thêm giảng viên";
+
+            document.getElementById("submitText").innerText =
+                "Thêm giảng viên";
+
+            document.getElementById("instructorForm").action =
+                "/Admin/Instructors/Create";
+
+            document.getElementById("instructorId").value = "";
+
+            document.getElementById("fullName").value = "";
+
+            document.getElementById("email").value = "";
+
+            document.getElementById("phoneNumber").value = "";
+
+            document.getElementById("description").value = "";
+
+            document.getElementById("password").value = "";
+
+            document.getElementById("passwordGroup")
+                .style.display = "block";
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById("instructorModal")
+                );
+
+            modal.show();
+        }
+
+
+        // ============================================
+        // SỬA GIẢNG VIÊN
+        // ============================================
+
+        function editInstructor(
+            id,
+            fullName,
+            email,
+            phone,
+            description
+        ) {
+
+            document.getElementById("modalTitle").innerText =
+                "Chỉnh sửa giảng viên";
+
+            document.getElementById("submitText").innerText =
+                "Lưu thay đổi";
+
+            document.getElementById("instructorForm").action =
+                "/Admin/Instructors/Edit";
+
+            document.getElementById("instructorId").value =
+                id;
+
+            document.getElementById("fullName").value =
+                fullName || "";
+
+            document.getElementById("email").value =
+                email || "";
+
+            document.getElementById("phoneNumber").value =
+                phone || "";
+
+            document.getElementById("description").value =
+                description || "";
+
+            document.getElementById("password").value =
+                "";
+
+            document.getElementById("passwordGroup")
+                .style.display = "none";
+
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById("instructorModal")
+                );
+
+            modal.show();
+        }
+
+
+        // ============================================
+        // XEM GIẢNG VIÊN
+        // ============================================
+
+        function viewInstructor(
+            fullName,
+            email,
+            phone,
+            description
+        ) {
+
+            document.getElementById("viewFullName").innerText =
+                fullName || "Chưa cập nhật";
+
+            document.getElementById("viewEmail").innerText =
+                email || "Chưa cập nhật";
+
+            document.getElementById("viewPhone").innerText =
+                phone || "Chưa cập nhật";
+
+            document.getElementById("viewDescription").innerText =
+                description || "Chưa có mô tả";
+
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById("viewInstructorModal")
+                );
+
+            modal.show();
+        }
+
+
+        // ============================================
+        // XÓA GIẢNG VIÊN
+        // ============================================
+
+        function deleteInstructor(
+            id,
+            fullName
+        ) {
+
+            document.getElementById("deleteInstructorId").value =
+                id;
+
+            document.getElementById("deleteInstructorName").innerText =
+                fullName || "giảng viên này";
+
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById("deleteInstructorModal")
+                );
+
+            modal.show();
+        }
+
+    </script>
+
+
+    <style>
+
+        /* ============================================
+           INSTRUCTOR AVATAR
+           ============================================ */
+
+        .instructor-avatar {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #e7f1ff;
+
+            color: #0d6efd;
+
+            font-size: 20px;
+
+            flex-shrink: 0;
+        }
+
+
+        .instructor-avatar-large {
+            width: 85px;
+            height: 85px;
+
+            margin: auto;
+
+            font-size: 36px;
+        }
+
+
+        /* ============================================
+           MODAL
+           ============================================ */
+
+        .modal-content {
+            border: none;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .modal-header {
+            padding: 20px 24px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .modal-body {
+            padding: 24px;
+        }
+
+
+        .modal-footer {
+            padding: 16px 24px;
+
+            border-top: 1px solid #eee;
+        }
+
+
+        /* ============================================
+           FORM
+           ============================================ */
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+
+            padding: 10px 12px;
+
+            border: 1px solid #dee2e6;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #86b7fe;
+
+            box-shadow:
+                0 0 0 0.2rem rgba(13, 110, 253, .15);
+        }
+
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+
+        /* ============================================
+           TABLE
+           ============================================ */
+
+        .admin-course-table td {
+            vertical-align: middle;
+        }
+
+
+        .admin-course-table tbody tr {
+            transition: .2s;
+        }
+
+
+        .admin-course-table tbody tr:hover {
+            background: #f8faff;
+        }
+
+
+        /* ============================================
+           MOBILE
+           ============================================ */
+
+        @media (max-width: 768px) {
+
+            .admin-page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .admin-search {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+}
