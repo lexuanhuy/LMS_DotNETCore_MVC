@@ -2,82 +2,676 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Đăng nhập";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: linear-gradient(135deg, #eef4ff 0%, #f8fbff 50%, #eef7ff 100%);
+    }
+
+    .login-page {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .login-wrapper {
+        width: 100%;
+        max-width: 1050px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: #ffffff;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(30, 64, 175, 0.15);
+    }
+
+    /* =========================
+       LEFT
+    ========================= */
+
+    .login-banner {
+        position: relative;
+        min-height: 600px;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        overflow: hidden;
+    }
+
+    .login-banner::before {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -100px;
+        right: -80px;
+    }
+
+    .login-banner::after {
+        content: "";
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        bottom: -100px;
+        left: -80px;
+    }
+
+    .login-banner-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .brand-logo {
+        width: 65px;
+        height: 65px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        backdrop-filter: blur(10px);
+    }
+
+    .brand-logo i {
+        font-size: 32px;
+    }
+
+    .login-banner h1 {
+        font-size: 38px;
+        font-weight: 800;
+        margin-bottom: 18px;
+        line-height: 1.2;
+    }
+
+    .login-banner p {
+        font-size: 17px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.9);
+        max-width: 430px;
+    }
+
+    .feature-list {
+        margin-top: 35px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 17px;
+        font-size: 15px;
+    }
+
+    .feature-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.16);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    /* =========================
+       RIGHT
+    ========================= */
+
+    .login-form-container {
+        padding: 55px 55px;
+        display: flex;
+        align-items: center;
+    }
+
+    .login-form {
+        width: 100%;
+        max-width: 420px;
+        margin: auto;
+    }
+
+    .login-title {
+        font-size: 30px;
+        font-weight: 800;
+        color: #172554;
+        margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+        color: #64748b;
+        margin-bottom: 30px;
+        font-size: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label-custom {
+        display: block;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 18px;
+        z-index: 2;
+    }
+
+    .custom-input {
+        width: 100%;
+        height: 52px;
+        border: 1px solid #dbe3ef;
+        border-radius: 12px;
+        padding: 0 48px;
+        font-size: 15px;
+        color: #1e293b;
+        outline: none;
+        transition: all 0.2s ease;
+        background: #f8fafc;
+    }
+
+    .custom-input:focus {
+        border-color: #3b82f6;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.10);
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 18px;
+        padding: 5px;
+    }
+
+    .password-toggle:hover {
+        color: #2563eb;
+    }
+
+    .remember-forgot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 5px 0 25px;
+    }
+
+    .remember-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #475569;
+        font-size: 14px;
+    }
+
+    .remember-box input {
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+    }
+
+    .forgot-link {
+        color: #2563eb;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .forgot-link:hover {
+        text-decoration: underline;
+    }
+
+    .login-button {
+        width: 100%;
+        height: 52px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 20px rgba(37,99,235,0.22);
+    }
+
+    .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(37,99,235,0.30);
+    }
+
+    .login-button i {
+        margin-right: 8px;
+    }
+
+    .register-box {
+        margin-top: 28px;
+        padding-top: 25px;
+        border-top: 1px solid #e2e8f0;
+        text-align: center;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .register-link {
+        color: #2563eb;
+        font-weight: 700;
+        text-decoration: none;
+        margin-left: 5px;
+    }
+
+    .register-link:hover {
+        text-decoration: underline;
+    }
+
+    .validation-message {
+        color: #dc2626;
+        font-size: 13px;
+        margin-top: 6px;
+        display: block;
+    }
+
+    .login-validation {
+        margin-bottom: 20px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @@media (max-width: 900px) {
+
+        .login-wrapper {
+            grid-template-columns: 1fr;
+            max-width: 520px;
+        }
+
+        .login-banner {
+            min-height: auto;
+            padding: 40px;
+        }
+
+        .login-banner h1 {
+            font-size: 30px;
+        }
+
+        .feature-list {
+            margin-top: 25px;
+        }
+
+        .login-form-container {
+            padding: 40px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+
+        .login-page {
+            padding: 20px 12px;
+        }
+
+        .login-banner {
+            padding: 30px 25px;
+        }
+
+        .login-banner h1 {
+            font-size: 27px;
+        }
+
+        .login-banner p {
+            font-size: 14px;
+        }
+
+        .feature-item {
+            font-size: 14px;
+        }
+
+        .login-form-container {
+            padding: 30px 22px;
+        }
+
+        .login-title {
+            font-size: 26px;
+        }
+
+        .remember-forgot {
+            align-items: flex-start;
+            gap: 10px;
+        }
+    }
+</style>
+
+
+<div class="login-page">
+
+    <div class="login-wrapper">
+
+        <!-- ==========================================
+             BÊN TRÁI - GIỚI THIỆU
+        =========================================== -->
+
+        <div class="login-banner">
+
+            <div class="login-banner-content">
+
+                <div class="brand-logo">
+                    <i class="bi bi-mortarboard-fill"></i>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+
+                <h1>
+                    Chào mừng trở lại!
+                </h1>
+
+                <p>
+                    Đăng nhập vào hệ thống LMS để tiếp tục
+                    hành trình học tập và nâng cao kiến thức
+                    của bạn.
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-book"></i>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+
+                        <span>
+                            Hàng trăm khóa học chất lượng
+                        </span>
+
+                    </div>
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-person-video3"></i>
+                        </div>
+
+                        <span>
+                            Học cùng giảng viên chuyên nghiệp
+                        </span>
+
+                    </div>
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+
+                        <span>
+                            Học mọi lúc, mọi nơi
+                        </span>
+
+                    </div>
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-award"></i>
+                        </div>
+
+                        <span>
+                            Phát triển kỹ năng và kiến thức
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             BÊN PHẢI - FORM ĐĂNG NHẬP
+        =========================================== -->
+
+        <div class="login-form-container">
+
+            <div class="login-form">
+
+                <h2 class="login-title">
+                    Đăng nhập
+                </h2>
+
+                <p class="login-subtitle">
+                    Nhập thông tin tài khoản để tiếp tục
+                </p>
+
+
+                <form id="account"
+                      method="post"
+                      asp-route-returnUrl="@Model.ReturnUrl">
+
+                    <!-- VALIDATION -->
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger login-validation"
+                         role="alert">
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Input.Email"
+                               class="form-label-custom">
+
+                            Email
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-envelope input-icon"></i>
+
+                            <input asp-for="Input.Email"
+                                   class="custom-input"
+                                   autocomplete="username"
+                                   aria-required="true"
+                                   placeholder="Nhập email của bạn" />
+
+                        </div>
+
+                        <span asp-validation-for="Input.Email"
+                              class="validation-message">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Input.Password"
+                               class="form-label-custom">
+
+                            Mật khẩu
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-lock input-icon"></i>
+
+                            <input asp-for="Input.Password"
+                                   id="loginPassword"
+                                   class="custom-input"
+                                   autocomplete="current-password"
+                                   aria-required="true"
+                                   placeholder="Nhập mật khẩu" />
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    id="togglePassword"
+                                    title="Hiện mật khẩu">
+
+                                <i class="bi bi-eye"></i>
+
+                            </button>
+
+                        </div>
+
+                        <span asp-validation-for="Input.Password"
+                              class="validation-message">
+                        </span>
+
+                    </div>
+
+
+                    <!-- REMEMBER + FORGOT -->
+
+                    <div class="remember-forgot">
+
+                        <label class="remember-box">
+
+                            <input asp-for="Input.RememberMe" />
+
+                            <span>
+                                Ghi nhớ đăng nhập
+                            </span>
+
+                        </label>
+
+
+                        <a asp-page="./ForgotPassword"
+                           class="forgot-link">
+
+                            Quên mật khẩu?
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button id="login-submit"
+                            type="submit"
+                            class="login-button">
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+
+                        Đăng nhập
+
+                    </button>
+
+
+                    <!-- REGISTER -->
+
+                    <div class="register-box">
+
+                        <span>
+                            Bạn chưa có tài khoản?
+                        </span>
+
+                        <a asp-page="./Register"
+                           asp-route-returnUrl="@Model.ReturnUrl"
+                           class="register-link">
+
+                            Đăng ký ngay
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
     </div>
+
 </div>
 
+
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const password =
+                document.getElementById("loginPassword");
+
+            const toggle =
+                document.getElementById("togglePassword");
+
+            if (password && toggle) {
+
+                toggle.addEventListener("click", function () {
+
+                    const icon =
+                        toggle.querySelector("i");
+
+                    if (password.type === "password") {
+
+                        password.type = "text";
+
+                        icon.classList.remove("bi-eye");
+
+                        icon.classList.add("bi-eye-slash");
+
+                        toggle.title = "Ẩn mật khẩu";
+
+                    }
+                    else {
+
+                        password.type = "password";
+
+                        icon.classList.remove("bi-eye-slash");
+
+                        icon.classList.add("bi-eye");
+
+                        toggle.title = "Hiện mật khẩu";
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    </script>
 }
