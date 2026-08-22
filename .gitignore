@@ -1,0 +1,60 @@
+﻿## .NET Core / Visual Studio .gitignore
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code files
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+
+# NuGet packages and folders
+*.nupkg
+# Uncomment the line below if you do not want to restore packages from nuget.org for local builds
+# !**/packages/
+# packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# ASP.NET Core specific
+[Bb]uild/
+[Ll]ocalDataContext/
+*.publishSettings
+# Uncomment the next line if you want to ignore Entity Framework Migration files that are generated locally (usually not recommended to ignore migrations)
+# Migrations/*.cs
+
+# Database files (nếu bạn dùng LocalDB hoặc SQLite lưu trực tiếp trong project)
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
