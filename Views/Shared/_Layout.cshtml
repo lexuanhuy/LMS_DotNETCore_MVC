@@ -28,7 +28,7 @@
                         <li class="nav-item">
                             <a class="nav-link fw-semibold text-dark px-3 rounded-pill" asp-area="" asp-controller="Courses" asp-action="Index">Tất cả Khóa học</a>
                         </li>
-                        @if (User.Identity?.IsAuthenticated ?? false)
+                        @if (User.IsInRole(LMS_DotNETCore_MVC.Models.SD.Role_Student))
                         {
                             <li class="nav-item">
                                 <a class="nav-link fw-semibold text-dark px-3 rounded-pill" asp-area="" asp-controller="Enrollments" asp-action="MyCourses">

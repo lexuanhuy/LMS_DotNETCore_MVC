@@ -103,6 +103,22 @@ namespace LMS_DotNETCore_MVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public async Task<IActionResult> ToggleProgressAjax([FromBody] ProgressRequest request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Json(new { success = false, message = "Chưa đăng nhập" });
+            }
+
+            bool isCompleted = await _progressRepository.ToggleLessonProgressAsync(userId, request.LessonId);
+            double newPercentage = await _progressRepository.GetCourseCompletionPercentageAsync(userId, request.CourseId);
+
+            return Json(new { success = true, isCompleted = isCompleted, newPercentage = newPercentage });
+        }
+
+        [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReview(int courseId, int rating, string comment)
         {
@@ -149,5 +165,11 @@ namespace LMS_DotNETCore_MVC.Controllers
             ViewBag.Categories = await _categoryRepository.GetAllCategoriesAsync();
             return View(course);
         }
+    }
+
+    public class ProgressRequest
+    {
+        public int LessonId { get; set; }
+        public int CourseId { get; set; }
     }
 }

@@ -9,7 +9,7 @@
     double avgRating = ViewBag.AverageRating as double? ?? 5.0;
 }
 
-<div class="container py-4">
+<div class="container-fluid px-lg-5 py-4">
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm mb-4" role="alert">
@@ -18,266 +18,267 @@
         </div>
     }
 
-    <div class="row">
-        <!-- Main Content (Left Column) -->
-        <div class="col-12 col-lg-8 mb-4">
-            <!-- Header section -->
-            <div class="mb-3">
-                @if (Model?.Category != null)
-                {
-                    <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-2 fw-semibold">
-                        @Model.Category.IconClass @Model.Category.Name
-                    </span>
-                }
-                <h1 class="display-6 fw-bold mb-2">@Model?.Title</h1>
-                <div class="d-flex align-items-center flex-wrap gap-3 text-muted small">
-                    <div>
-                        <i class="bi bi-person-circle text-primary me-1"></i>
-                        <span>Giảng viên: <strong>@(Model?.Instructor?.FullName ?? "Đang cập nhật")</strong></span>
-                    </div>
-                    <div>
-                        <i class="bi bi-star-fill text-warning me-1"></i>
-                        <strong>@avgRating</strong> <span class="text-muted">(@reviews.Count() đánh giá)</span>
-                    </div>
-                    <div>
-                        <i class="bi bi-book me-1"></i>
-                        <span>@Model?.Lessons?.Count() bài học</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Image Cover -->
-            <div class="mb-4 rounded-4 overflow-hidden shadow-sm">
-                <img src="@(Model?.ImageUrl ?? "/images/course-thumbnail.png")"
-                     alt="@Model?.Title"
-                     class="img-fluid w-100" style="max-height: 380px; object-fit: cover;"
-                     onerror="this.src='/images/course-thumbnail.png';" />
-            </div>
-
-            <!-- Student Progress Bar (If Enrolled) -->
-            @if (isEnrolled)
-            {
-                <div class="card border-0 bg-primary-subtle rounded-4 p-4 mb-4 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="fw-bold text-primary">
-                            <i class="bi bi-trophy-fill me-1"></i> Tiến độ học tập của bạn
+    <div class="row g-4">
+        <!-- LEFT WORKSPACE (col-lg-8): Dynamic Content & Player -->
+        <div class="col-12 col-lg-8">
+            
+            <!-- VIEW A: COURSE OVERVIEW (DEFAULT ACTIVE) -->
+            <div id="overviewWorkspace">
+                <!-- Header section -->
+                <div class="mb-3">
+                    @if (Model?.Category != null)
+                    {
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-2 fw-semibold">
+                            @Model.Category.IconClass @Model.Category.Name
                         </span>
-                        <span class="fw-bold text-primary fs-5">@completionPercentage%</span>
-                    </div>
-                    <div class="progress rounded-pill bg-white" style="height: 12px;">
-                        <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" 
-                             role="progressbar" 
-                             style="width: @completionPercentage%" 
-                             aria-valuenow="@completionPercentage" 
-                             aria-valuemin="0" 
-                             aria-valuemax="100"></div>
+                    }
+                    <h1 class="display-6 fw-bold mb-2">@Model?.Title</h1>
+                    <div class="d-flex align-items-center flex-wrap gap-3 text-muted small">
+                        <div>
+                            <i class="bi bi-person-circle text-primary me-1"></i>
+                            <span>Giảng viên: <strong>@(Model?.Instructor?.FullName ?? "Đang cập nhật")</strong></span>
+                        </div>
+                        <div>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <strong>@avgRating</strong> <span class="text-muted">(@reviews.Count() đánh giá)</span>
+                        </div>
+                        <div>
+                            <i class="bi bi-book me-1"></i>
+                            <span>@Model?.Lessons?.Count() bài học</span>
+                        </div>
                     </div>
                 </div>
-            }
 
-            <!-- Course Description -->
-            <section class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-                <h4 class="fw-bold mb-3">Mô tả khóa học</h4>
-                <div class="text-secondary leading-relaxed">
-                    @if (!string.IsNullOrWhiteSpace(Model?.Description))
-                    {
-                        @Html.Raw(Model.Description)
-                    }
-                    else
-                    {
-                        <p class="text-muted mb-0">Chưa có thông tin mô tả chi tiết cho khóa học này.</p>
-                    }
+                <!-- Image Cover -->
+                <div class="mb-4 rounded-4 overflow-hidden shadow-sm">
+                    <img src="@(Model?.ImageUrl ?? "/images/course-thumbnail.png")"
+                         alt="@Model?.Title"
+                         class="img-fluid w-100" style="max-height: 380px; object-fit: cover;"
+                         onerror="this.src='/images/course-thumbnail.png';" />
                 </div>
-            </section>
 
-            <!-- Lessons Accordion/List -->
-            <section class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-                <h4 class="fw-bold mb-3 d-flex justify-content-between align-items-center">
-                    <span>Nội dung khóa học</span>
-                    <span class="badge bg-secondary rounded-pill fs-6 fw-normal">@Model?.Lessons?.Count() bài học</span>
-                </h4>
-                <div class="list-group list-group-flush">
-                    @if (Model?.Lessons != null && Model.Lessons.Any())
-                    {
-                        var idx = 1;
-                        foreach (var lesson in Model.Lessons.OrderBy(l => l.OrderIndex))
+                <!-- Course Description -->
+                <section class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <h4 class="fw-bold mb-3">Mô tả khóa học</h4>
+                    <div class="text-secondary leading-relaxed">
+                        @if (!string.IsNullOrWhiteSpace(Model?.Description))
                         {
-                            bool isCompleted = completedLessonIds.Contains(lesson.Id);
-                            <div class="list-group-item px-0 py-3 d-flex align-items-center justify-content-between border-bottom">
-                                <div class="d-flex align-items-center gap-3">
-                                    @if (isEnrolled)
-                                    {
-                                        <form asp-action="ToggleProgress" method="post" class="m-0">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="lessonId" value="@lesson.Id" />
-                                            <input type="hidden" name="courseId" value="@Model.Id" />
-                                            <button type="submit" class="btn btn-sm p-0 border-0 text-decoration-none">
-                                                @if (isCompleted)
-                                                {
-                                                    <i class="bi bi-check-circle-fill text-success fs-4"></i>
-                                                }
-                                                else
-                                                {
-                                                    <i class="bi bi-circle text-muted fs-4"></i>
-                                                }
-                                            </button>
-                                        </form>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-light text-dark rounded-circle px-3 py-2 fw-bold">@idx</span>
-                                    }
-                                    <div>
-                                        <div class="fw-semibold text-dark">@lesson.Title</div>
-                                        <small class="text-muted">@lesson.Description</small>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    @if (isEnrolled || !string.IsNullOrEmpty(lesson.ContentUrl))
-                                    {
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-primary rounded-pill px-3"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#lessonPlayerModal"
-                                                data-content-url="@lesson.ContentUrl"
-                                                data-lesson-title="@lesson.Title">
-                                            <i class="bi bi-play-fill me-1"></i> Xem bài học
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-light text-muted rounded-pill px-3 py-2">
-                                            <i class="bi bi-lock-fill me-1"></i> Đã khóa
-                                        </span>
-                                    }
-                                </div>
-                            </div>
-                            idx++;
+                            @Html.Raw(Model.Description)
                         }
+                        else
+                        {
+                            <p class="text-muted mb-0">Chưa có thông tin mô tả chi tiết cho khóa học này.</p>
+                        }
+                    </div>
+                </section>
+
+                <!-- Student Reviews Section -->
+                <section class="card border-0 shadow-sm rounded-4 p-4">
+                    <h4 class="fw-bold mb-4">Đánh giá từ học viên</h4>
+
+                    @if (isEnrolled)
+                    {
+                        <div class="bg-light p-3 rounded-4 mb-4">
+                            <h6 class="fw-bold mb-2">Viết đánh giá của bạn</h6>
+                            <form asp-action="AddReview" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="courseId" value="@Model?.Id" />
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">Chọn số sao</label>
+                                    <select name="rating" class="form-select rounded-3 w-auto">
+                                        <option value="5">⭐⭐⭐⭐⭐ (5 sao - Rất tốt)</option>
+                                        <option value="4">⭐⭐⭐⭐ (4 sao - Tốt)</option>
+                                        <option value="3">⭐⭐⭐ (3 sao - Bình thường)</option>
+                                        <option value="2">⭐⭐ (2 sao - Cần cải thiện)</option>
+                                        <option value="1">⭐ (1 sao - Kém)</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea name="comment" class="form-control rounded-3" rows="3" placeholder="Chia sẻ cảm nhận của bạn về khóa học này..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 btn-sm">Gửi đánh giá</button>
+                            </form>
+                        </div>
+                    }
+
+                    @if (reviews != null && reviews.Any())
+                    {
+                        <div class="d-flex flex-column gap-3">
+                            @foreach (var r in reviews)
+                            {
+                                <div class="border-bottom pb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <div class="fw-bold">@(r.Student?.FullName ?? "Học viên")</div>
+                                        <small class="text-muted">@r.CreatedAt.ToString("dd/MM/yyyy")</small>
+                                    </div>
+                                    <div class="text-warning small mb-2">
+                                        @for (int i = 0; i < r.Rating; i++)
+                                        {
+                                            <span>★</span>
+                                        }
+                                    </div>
+                                    <p class="text-secondary small mb-0">@r.Comment</p>
+                                </div>
+                            }
+                        </div>
                     }
                     else
                     {
-                        <div class="text-muted text-center py-4">Giảng viên chưa cập nhật bài học nào.</div>
+                        <p class="text-muted mb-0 text-center py-3">Chưa có đánh giá nào cho khóa học này.</p>
                     }
+                </section>
+            </div>
+
+            <!-- VIEW B: LESSON PLAYER WORKSPACE (LOADED ON LESSON CLICK) -->
+            <div id="lessonWorkspace" class="d-none">
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <!-- Lesson Header & Back Button -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="badge bg-primary-subtle text-primary px-3 py-1 rounded-pill mb-1 fw-semibold" id="activeLessonIndex">
+                                Bài 1
+                            </span>
+                            <h3 class="fw-bold mb-0 text-dark" id="activeLessonTitle">Tiêu đề bài học</h3>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" id="backToOverviewBtn">
+                            <i class="bi bi-arrow-left me-1"></i> Xem tổng quan
+                        </button>
+                    </div>
+
+                    <!-- Video Player Frame -->
+                    <div class="player-container rounded-4 overflow-hidden mb-3 bg-black">
+                        <div id="lessonMediaContainer" style="min-height: 380px;" class="d-flex align-items-center justify-content-center text-white">
+                            <span>Đang tải nội dung bài học...</span>
+                        </div>
+                    </div>
+
+                    <!-- Student Progress Action Bar -->
+                    @if (isEnrolled)
+                    {
+                        <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-4 mb-3">
+                            <span class="text-muted small">
+                                <i class="bi bi-info-circle me-1 text-primary"></i> Tự động tích xong khi phát hết video
+                            </span>
+                            <button type="button" class="btn btn-success rounded-pill px-4 fw-semibold" id="workspaceMarkDoneBtn">
+                                <i class="bi bi-check-lg me-1"></i> Đánh dấu đã học xong
+                            </button>
+                        </div>
+                    }
+
+                    <!-- Lesson Description -->
+                    <div class="bg-light p-3 rounded-4">
+                        <h6 class="fw-bold mb-1">Mô tả bài học</h6>
+                        <p class="text-secondary mb-0 small" id="activeLessonDescription">Nội dung bài học...</p>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Student Reviews Section -->
-            <section class="card border-0 shadow-sm rounded-4 p-4">
-                <h4 class="fw-bold mb-4">Đánh giá từ học viên</h4>
+        </div>
 
-                @if (isEnrolled)
-                {
-                    <div class="bg-light p-3 rounded-4 mb-4">
-                        <h6 class="fw-bold mb-2">Viết đánh giá của bạn</h6>
-                        <form asp-action="AddReview" method="post">
+        <!-- RIGHT SIDEBAR (col-lg-4): Enrollment Card & Navigation List -->
+        <div class="col-12 col-lg-4">
+            <div  style="top: 4rem;">
+                
+                <!-- Price / Progress Status Card -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <div class="mb-3 text-center">
+                        <small class="text-muted d-block mb-1">Học phí trọn gói</small>
+                        @if (Model?.Price > 0)
+                        {
+                            <h2 class="fw-bold text-primary mb-0">@string.Format("{0:N0} ₫", Model.Price)</h2>
+                        }
+                        else
+                        {
+                            <h2 class="fw-bold text-success mb-0">Miễn phí</h2>
+                        }
+                    </div>
+
+                    @if (isEnrolled)
+                    {
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="fw-bold text-primary small"><i class="bi bi-trophy-fill me-1"></i> Tiến độ của bạn</span>
+                                <span class="fw-bold text-primary" id="sidebarProgressText">@completionPercentage%</span>
+                            </div>
+                            <div class="progress rounded-pill bg-light" style="height: 10px;">
+                                <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated"
+                                     id="sidebarProgressBar"
+                                     role="progressbar"
+                                     style="width: @completionPercentage%"
+                                     aria-valuenow="@completionPercentage"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-controller="Enrollments" asp-action="Enroll" method="post">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="courseId" value="@Model?.Id" />
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Chọn số sao</label>
-                                <select name="rating" class="form-select rounded-3 w-auto">
-                                    <option value="5">⭐⭐⭐⭐⭐ (5 sao - Rất tốt)</option>
-                                    <option value="4">⭐⭐⭐⭐ (4 sao - Tốt)</option>
-                                    <option value="3">⭐⭐⭐ (3 sao - Bình thường)</option>
-                                    <option value="2">⭐⭐ (2 sao - Cần cải thiện)</option>
-                                    <option value="1">⭐ (1 sao - Kém)</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <textarea name="comment" class="form-control rounded-3" rows="3" placeholder="Chia sẻ cảm nhận của bạn về khóa học này..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary rounded-pill px-4 btn-sm">Gửi đánh giá</button>
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill w-100 shadow-sm">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Đăng ký học ngay
+                            </button>
                         </form>
-                    </div>
-                }
+                    }
+                </div>
 
-                @if (reviews != null && reviews.Any())
-                {
-                    <div class="d-flex flex-column gap-3">
-                        @foreach (var r in reviews)
-                        {
-                            <div class="border-bottom pb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <div class="fw-bold">@(r.Student?.FullName ?? "Học viên")</div>
-                                    <small class="text-muted">@r.CreatedAt.ToString("dd/MM/yyyy")</small>
-                                </div>
-                                <div class="text-warning small mb-2">
-                                    @for (int i = 0; i < r.Rating; i++)
-                                    {
-                                        <span>★</span>
-                                    }
-                                </div>
-                                <p class="text-secondary small mb-0">@r.Comment</p>
+                <!-- Course Navigation Menu Card -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-white border-0 pt-3 pb-2 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0 text-dark">Danh sách bài học</h5>
+                        <span class="badge bg-secondary rounded-pill fw-normal">@Model?.Lessons?.Count() bài</span>
+                    </div>
+
+                    <div class="list-group list-group-flush" style="max-height: 520px; overflow-y: auto;">
+                        
+                        <!-- ITEM 0: DEFAULT OVERVIEW TAB -->
+                        <button type="button"
+                                class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center gap-3 border-0 active nav-item-btn"
+                                id="navOverviewBtn">
+                            <i class="bi bi-pin-angle-fill fs-5 text-primary"></i>
+                            <div>
+                                <div class="fw-bold">Tổng quan khóa học</div>
                             </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p class="text-muted mb-0 text-center py-3">Chưa có đánh giá nào cho khóa học này.</p>
-                }
-            </section>
-        </div>
-
-        <!-- Sticky Enrollment Card (Right Column) -->
-        <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 2rem;">
-                <div class="mb-4 text-center">
-                    <small class="text-muted d-block mb-1">Học phí trọn gói</small>
-                    @if (Model?.Price > 0)
-                    {
-                        <h2 class="fw-bold text-primary mb-0">@string.Format("{0:N0} ₫", Model.Price)</h2>
-                    }
-                    else
-                    {
-                        <h2 class="fw-bold text-success mb-0">Miễn phí</h2>
-                    }
-                </div>
-
-                @if (isEnrolled)
-                {
-                    <div class="alert alert-success text-center rounded-3 mb-3">
-                        <i class="bi bi-check-circle-fill me-1"></i> Bạn đã đăng ký khóa học này!
-                    </div>
-                    <a href="#lessonList" class="btn btn-outline-primary btn-lg rounded-pill w-100 mb-2">Tiếp tục học</a>
-                }
-                else
-                {
-                    <form asp-controller="Enrollments" asp-action="Enroll" method="post">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="courseId" value="@Model?.Id" />
-                        <button type="submit" class="btn btn-primary btn-lg rounded-pill w-100 shadow-sm mb-3">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> Đăng ký học ngay
                         </button>
-                    </form>
-                }
 
-                <hr />
-                <div class="small text-muted">
-                    <div class="mb-2"><i class="bi bi-shield-check text-primary me-2"></i> Quyền truy cập trọn đời</div>
-                    <div class="mb-2"><i class="bi bi-device-hdd text-primary me-2"></i> Học trên máy tính & di động</div>
-                    <div><i class="bi bi-patch-check text-primary me-2"></i> Phù hợp mọi trình độ</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                        <div class="border-top my-1"></div>
 
-<!-- Modal Lesson Player -->
-<div class="modal fade" id="lessonPlayerModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-4 border-0 shadow">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold" id="lessonTitle">Bài học</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-0">
-                <div class="player-container">
-                    <div class="d-flex align-items-center justify-content-center bg-black text-white" style="min-height:350px;">
-                        <span>Đang tải bài học...</span>
+                        <!-- LESSON ITEMS -->
+                        @if (Model?.Lessons != null && Model.Lessons.Any())
+                        {
+                            var idx = 1;
+                            foreach (var lesson in Model.Lessons.OrderBy(l => l.OrderIndex))
+                            {
+                                bool isCompleted = completedLessonIds.Contains(lesson.Id);
+                                <button type="button"
+                                        class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center justify-content-between border-0 lesson-nav-item nav-item-btn"
+                                        data-lesson-id="@lesson.Id"
+                                        data-course-id="@Model.Id"
+                                        data-lesson-title="@lesson.Title"
+                                        data-lesson-desc="@(lesson.Description ?? "")"
+                                        data-content-url="@(lesson.ContentUrl ?? "")"
+                                        data-is-completed="@(isCompleted ? "true" : "false")"
+                                        data-index="@idx">
+                                    <div class="d-flex align-items-center gap-3 me-2">
+                                        <i class="bi @(isCompleted ? "bi-check-circle-fill text-success" : (isEnrolled ? "bi-play-circle text-primary" : "bi-lock-fill text-muted")) fs-5 nav-icon" id="sidebar-icon-@lesson.Id"></i>
+                                        <div class="text-start">
+                                            <div class="fw-semibold text-truncate" style="max-width: 200px;">Bài @idx: @lesson.Title</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-light text-dark rounded-pill border">#@idx</span>
+                                </button>
+                                idx++;
+                            }
+                        }
+                        else
+                        {
+                            <div class="p-4 text-center text-muted small">Chưa có bài học nào.</div>
+                        }
+
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -286,19 +287,118 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const modalEl = document.getElementById('lessonPlayerModal');
-            if (modalEl) {
-                modalEl.addEventListener('show.bs.modal', function (event) {
-                    const button = event.relatedTarget;
-                    const url = button.getAttribute('data-content-url') || '';
-                    const title = button.getAttribute('data-lesson-title') || 'Bài học';
-                    const container = modalEl.querySelector('.player-container');
-                    const titleEl = modalEl.querySelector('.modal-title');
+            let activeLessonId = 0;
+            let activeCourseId = 0;
+            const isEnrolled = @(isEnrolled ? "true" : "false");
 
-                    if (titleEl) titleEl.textContent = title;
+            const overviewWorkspace = document.getElementById('overviewWorkspace');
+            const lessonWorkspace = document.getElementById('lessonWorkspace');
+            const navOverviewBtn = document.getElementById('navOverviewBtn');
+            const backToOverviewBtn = document.getElementById('backToOverviewBtn');
+            const mediaContainer = document.getElementById('lessonMediaContainer');
+            const markDoneBtn = document.getElementById('workspaceMarkDoneBtn');
 
+            function clearActiveNav() {
+                document.querySelectorAll('.nav-item-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-primary-subtle');
+                });
+            }
+
+            function showOverview() {
+                clearActiveNav();
+                navOverviewBtn.classList.add('active');
+                lessonWorkspace.classList.add('d-none');
+                overviewWorkspace.classList.remove('d-none');
+                if (mediaContainer) mediaContainer.innerHTML = '';
+            }
+
+            if (navOverviewBtn) navOverviewBtn.addEventListener('click', showOverview);
+            if (backToOverviewBtn) backToOverviewBtn.addEventListener('click', showOverview);
+
+            function updateProgressUI(lessonId, isCompleted, newPercentage) {
+                const icon = document.getElementById(`sidebar-icon-${lessonId}`);
+                if (icon) {
+                    if (isCompleted) {
+                        icon.className = 'bi bi-check-circle-fill text-success fs-5 nav-icon';
+                    } else {
+                        icon.className = isEnrolled ? 'bi bi-play-circle text-primary fs-5 nav-icon' : 'bi bi-lock-fill text-muted fs-5 nav-icon';
+                    }
+                }
+
+                const progressBar = document.getElementById('sidebarProgressBar');
+                const progressText = document.getElementById('sidebarProgressText');
+                if (progressBar) {
+                    progressBar.style.width = newPercentage + '%';
+                    progressBar.setAttribute('aria-valuenow', newPercentage);
+                }
+                if (progressText) {
+                    progressText.textContent = newPercentage + '%';
+                }
+            }
+
+            function toggleProgressAjax(lessonId, courseId) {
+                if (!isEnrolled) return;
+
+                fetch('/Courses/ToggleProgressAjax', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ lessonId: lessonId, courseId: courseId })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        updateProgressUI(lessonId, data.isCompleted, data.newPercentage);
+                        if (markDoneBtn) {
+                            markDoneBtn.innerHTML = data.isCompleted 
+                                ? '<i class="bi bi-check-circle-fill me-1"></i> Đã hoàn thành' 
+                                : '<i class="bi bi-check-lg me-1"></i> Đánh dấu đã học xong';
+                        }
+                    }
+                })
+                .catch(err => console.error(err));
+            }
+
+            // Click lesson items in sidebar
+            document.querySelectorAll('.lesson-nav-item').forEach(item => {
+                item.addEventListener('click', function () {
+                    const lId = parseInt(this.getAttribute('data-lesson-id'));
+                    const cId = parseInt(this.getAttribute('data-course-id'));
+                    const title = this.getAttribute('data-lesson-title');
+                    const desc = this.getAttribute('data-lesson-desc');
+                    const url = this.getAttribute('data-content-url');
+                    const idx = this.getAttribute('data-index');
+                    const isCompleted = this.getAttribute('data-is-completed') === 'true';
+
+                    if (!isEnrolled && !url) {
+                        alert('Bạn cần đăng ký khóa học để truy cập bài học này.');
+                        return;
+                    }
+
+                    activeLessonId = lId;
+                    activeCourseId = cId;
+
+                    clearActiveNav();
+                    this.classList.add('active', 'bg-primary-subtle');
+
+                    // Switch view to Lesson Workspace
+                    overviewWorkspace.classList.add('d-none');
+                    lessonWorkspace.classList.remove('d-none');
+
+                    document.getElementById('activeLessonIndex').textContent = `Bài ${idx}`;
+                    document.getElementById('activeLessonTitle').textContent = title;
+                    document.getElementById('activeLessonDescription').textContent = desc || 'Chưa có mô tả chi tiết cho bài học này.';
+
+                    if (markDoneBtn) {
+                        markDoneBtn.innerHTML = isCompleted 
+                            ? '<i class="bi bi-check-circle-fill me-1"></i> Đã hoàn thành' 
+                            : '<i class="bi bi-check-lg me-1"></i> Đánh dấu đã học xong';
+                    }
+
+                    // Render Player Content
                     if (!url) {
-                        container.innerHTML = '<div class="p-5 text-center text-muted">Bài học này chưa có liên kết phát video hoặc tài liệu.</div>';
+                        mediaContainer.innerHTML = '<div class="p-5 text-center text-muted">Bài học này chưa có nội dung phát video.</div>';
                         return;
                     }
 
@@ -309,18 +409,28 @@
                         } else if (url.includes('youtu.be/')) {
                             embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
                         }
-                        container.innerHTML = `<div class="ratio ratio-16x9"><iframe src="${embedUrl}" allowfullscreen></iframe></div>`;
+                        mediaContainer.innerHTML = `<div class="ratio ratio-16x9 w-100"><iframe src="${embedUrl}" allowfullscreen class="rounded-4"></iframe></div>`;
                     } else if (url.match(/\.(mp4|webm|ogg)$/i)) {
-                        container.innerHTML = `<video controls class="w-100 rounded-bottom-4" style="max-height: 450px;"><source src="${url}"></video>`;
+                        mediaContainer.innerHTML = `<video controls autoplay class="w-100 rounded-4" id="workspaceVideoPlayer" style="max-height: 450px;"><source src="${url}"></video>`;
+                        
+                        setTimeout(() => {
+                            const videoEl = document.getElementById('workspaceVideoPlayer');
+                            if (videoEl) {
+                                videoEl.addEventListener('ended', function () {
+                                    toggleProgressAjax(activeLessonId, activeCourseId);
+                                });
+                            }
+                        }, 300);
                     } else {
-                        container.innerHTML = `<div class="ratio ratio-16x9"><iframe src="${url}" allowfullscreen></iframe></div>`;
+                        mediaContainer.innerHTML = `<div class="ratio ratio-16x9 w-100"><iframe src="${url}" allowfullscreen class="rounded-4"></iframe></div>`;
                     }
                 });
+            });
 
-                modalEl.addEventListener('hidden.bs.modal', function () {
-                    const container = modalEl.querySelector('.player-container');
-                    if (container) {
-                        container.innerHTML = '';
+            if (markDoneBtn) {
+                markDoneBtn.addEventListener('click', function () {
+                    if (activeLessonId && activeCourseId) {
+                        toggleProgressAjax(activeLessonId, activeCourseId);
                     }
                 });
             }

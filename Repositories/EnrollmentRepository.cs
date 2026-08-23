@@ -1,4 +1,4 @@
-﻿using LMS_DotNETCore_MVC.Data;
+using LMS_DotNETCore_MVC.Data;
 using LMS_DotNETCore_MVC.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +37,8 @@ namespace LMS_DotNETCore_MVC.Repositories
                 .Where(e => e.StudentId == studentId)
                 .Include(e => e.Course) // Lấy thông tin chi tiết khóa học mà học viên đã đăng ký
                 .ThenInclude(c => c.Instructor) // Kèm luôn thông tin giảng viên dạy khóa đó
+                .Include(e => e.Course)
+                .ThenInclude(c => c.Category)
                 .ToListAsync();
         }
 

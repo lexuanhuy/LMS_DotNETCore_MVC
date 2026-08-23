@@ -91,6 +91,7 @@ public async Task<IActionResult> Create(
     ModelState.Remove("Instructor");
     ModelState.Remove("Lessons");
     ModelState.Remove("Enrollments");
+    ModelState.Remove("Category");
 
     // Kiểm tra ModelState
     if (!ModelState.IsValid)
@@ -218,6 +219,7 @@ public async Task<IActionResult> Create(
             ModelState.Remove("Instructor");
             ModelState.Remove("Lessons");
             ModelState.Remove("Enrollments");
+            ModelState.Remove("Category");
             ModelState.Remove("ImageUrl");
 
             if (ModelState.IsValid)
@@ -323,6 +325,7 @@ public async Task<IActionResult> Create(
                 .ToListAsync();
 
             ViewBag.Instructors = instructors;
+            ViewBag.Categories = await _context.Categories.OrderBy(c => c.DisplayOrder).ToListAsync();
         }
 
 

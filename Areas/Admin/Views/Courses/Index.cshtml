@@ -6,6 +6,8 @@
 
     var instructors = ViewBag.Instructors
         as IEnumerable<LMS_DotNETCore_MVC.Data.ApplicationUser>;
+    var categories = ViewBag.Categories
+        as IEnumerable<LMS_DotNETCore_MVC.Models.Category>;
 }
 
 <div class="container-fluid">
@@ -569,6 +571,36 @@
                                     {
                                         <option value="@instructor.Id">
                                             @instructor.FullName
+                                        </option>
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+                                Danh mục
+                            </label>
+
+                            <select name="CategoryId"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Chọn danh mục --
+                                </option>
+
+                                @if (categories != null)
+                                {
+                                    foreach (var category in categories)
+                                    {
+                                        <option value="@category.Id">
+                                            @category.IconClass @category.Name
                                         </option>
                                     }
                                 }

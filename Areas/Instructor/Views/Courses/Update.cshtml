@@ -1,52 +1,80 @@
-﻿@model LMS_DotNETCore_MVC.Models.Course
+@model LMS_DotNETCore_MVC.Models.Course
 
 @{
-    ViewData["Title"] = "Thêm khóa học mới";
+    ViewData["Title"] = "Chỉnh sửa khóa học";
+    var categories = ViewBag.Categories as IEnumerable<LMS_DotNETCore_MVC.Models.Category>;
 }
 
-<div class="container py-5">
+<!-- Summernote WYSIWYG CDN -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+<div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-            <div class="card rounded-3 shadow-sm">
+        <div class="col-12 col-md-10">
+            <div class="card rounded-4 border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="h4 mb-3">Thêm khóa học mới</h2>
+                    <h3 class="fw-bold mb-3">Chỉnh sửa khóa học</h3>
 
-                    <form asp-action="Update" method="post" enctype="multipart/form-data" class="needs-validation">
+                    <form asp-action="Update" method="post" enctype="multipart/form-data">
                         @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
 
-                        <div class="mb-3">
-                            <label asp-for="Title" class="form-label">Tên khóa học</label>
-                            <input asp-for="Title" class="form-control" placeholder="Nhập tên khóa học" />
-                            <span asp-validation-for="Title" class="text-danger small"></span>
-                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-8">
+                                <label asp-for="Title" class="form-label fw-semibold">Tên khóa học</label>
+                                <input asp-for="Title" class="form-control rounded-3" placeholder="Nhập tên khóa học" required />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Mô tả khóa học</label>
-                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Mô tả chi tiết về khóa học"></textarea>
-                            <span asp-validation-for="Description" class="text-danger small"></span>
+                            <div class="col-md-4">
+                                <label asp-for="CategoryId" class="form-label fw-semibold">Danh mục lĩnh vực</label>
+                                <select asp-for="CategoryId" class="form-select rounded-3">
+                                    <option value="">-- Chọn danh mục --</option>
+                                    @if (categories != null)
+                                    {
+                                        foreach (var cat in categories)
+                                        {
+                                            <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id ? "selected" : null)">
+                                                @cat.IconClass @cat.Name
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                            </div>
                         </div>
 
                         <div class="row g-3 mb-3">
-                            <div class="col-12 col-md-6">
-                                <label asp-for="Price" class="form-label">Giá khóa học</label>
+                            <div class="col-md-6">
+                                <label asp-for="Price" class="form-label fw-semibold">Học phí (VNĐ)</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">₫</span>
-                                    <input asp-for="Price" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
+                                    <input asp-for="Price" type="number" step="1000" min="0" class="form-control rounded-start-3" placeholder="0 (Miễn phí)" />
+                                    <span class="input-group-text rounded-end-3">₫</span>
                                 </div>
                                 <span asp-validation-for="Price" class="text-danger small"></span>
                             </div>
 
-                            <div class="col-12 col-md-6">
-                                <label asp-for="ImageUrl" class="form-label">Ảnh bìa</label>
-                                <input asp-for="ImageUrl" type="file" class="form-control" />
-                                <span asp-validation-for="ImageUrl" class="text-danger small"></span>
-                                <img src="@Model.ImageUrl" alt="Product Image" style="max-width:200px;" />
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Ảnh bìa khóa học</label>
+                                <input name="imageUrl" type="file" class="form-control rounded-3" accept="image/*" />
+                                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                {
+                                    <div class="mt-2">
+                                        <img src="@Model.ImageUrl" alt="Current Cover" class="rounded-3 shadow-sm" style="max-height: 80px; object-fit: cover;" onerror="this.src='/images/course-thumbnail.png';" />
+                                    </div>
+                                }
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                            <a asp-area="Instructor" asp-controller="Courses" asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
-                            <button type="submit" class="btn btn-primary">Lưu khóa học</button>
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold">Mô tả chi tiết khóa học (Rich Text)</label>
+                            <textarea asp-for="Description" id="richDescription" class="form-control" rows="8"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-area="Instructor" asp-controller="Courses" asp-action="Index" class="btn btn-light rounded-pill px-4">Quay lại</a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold">Cập nhật thay đổi</button>
                         </div>
                     </form>
                 </div>
@@ -57,20 +85,23 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    @* <script>
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script> *@
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#richDescription').summernote({
+                placeholder: 'Nhập mô tả chi tiết...',
+                tabsize: 2,
+                height: 250,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'italic', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+        });
+    </script>
 }

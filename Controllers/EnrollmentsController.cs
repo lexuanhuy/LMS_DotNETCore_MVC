@@ -34,6 +34,17 @@ namespace LMS_DotNETCore_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Enroll(int courseId)
         {
+            if (User.IsInRole(SD.Role_Admin))
+            {
+                TempData["Error"] = "Tài khoản Admin không đăng ký học viên. Vui lòng sử dụng trang Quản trị.";
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+            }
+            if (User.IsInRole(SD.Role_Instructor))
+            {
+                TempData["Error"] = "Tài khoản Giảng viên không đăng ký học viên. Vui lòng sử dụng Kênh Giảng viên.";
+                return RedirectToAction("Index", "Dashboard", new { area = "Instructor" });
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
@@ -68,6 +79,15 @@ namespace LMS_DotNETCore_MVC.Controllers
         [Authorize]
         public async Task<IActionResult> MyCourses()
         {
+            if (User.IsInRole(SD.Role_Admin))
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+            }
+            if (User.IsInRole(SD.Role_Instructor))
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "Instructor" });
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
