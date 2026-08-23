@@ -92,6 +92,11 @@ public async Task<IActionResult> Create(
     ModelState.Remove("Lessons");
     ModelState.Remove("Enrollments");
     ModelState.Remove("Category");
+    ModelState.Remove("Reviews");
+    ModelState.Remove("Description"); // Allow HTML from Summernote
+
+    // Normalize price
+    if (course.Price == null || course.Price < 0) course.Price = 0;
 
     // Kiểm tra ModelState
     if (!ModelState.IsValid)
@@ -221,6 +226,12 @@ public async Task<IActionResult> Create(
             ModelState.Remove("Enrollments");
             ModelState.Remove("Category");
             ModelState.Remove("ImageUrl");
+            ModelState.Remove("Reviews");
+            ModelState.Remove("Description"); // Allow HTML from Summernote
+
+            // Normalize price: treat null as 0
+            if (course.Price == null || course.Price < 0)
+                course.Price = 0;
 
             if (ModelState.IsValid)
             {
@@ -238,8 +249,9 @@ public async Task<IActionResult> Create(
                     // Cập nhật thông tin
                     existingCourse.Title = course.Title;
                     existingCourse.Description = course.Description;
-                    existingCourse.Price = course.Price;
+                    existingCourse.Price = course.Price ?? 0;
                     existingCourse.InstructorId = course.InstructorId;
+                    existingCourse.CategoryId = course.CategoryId;
 
                     // Nếu có ảnh mới
                     if (imageFile != null && imageFile.Length > 0)

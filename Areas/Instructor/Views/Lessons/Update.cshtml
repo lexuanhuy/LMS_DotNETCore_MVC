@@ -1,9 +1,12 @@
-﻿@model LMS_DotNETCore_MVC.Models.Lesson
+@model LMS_DotNETCore_MVC.Models.Lesson
 @using Microsoft.AspNetCore.Mvc.Rendering
 @{
     var isEdit = Model != null && Model.Id > 0;
-    ViewData["Title"] = isEdit ? "Sửa bài học" : "Thêm bài học";
+    ViewData["Title"] = "Sửa bài học";
 }
+
+<!-- Summernote WYSIWYG CDN -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-3">
@@ -13,14 +16,14 @@
         </a>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
             <form asp-area="Instructor"
                   asp-controller="Lessons"
                   asp-action="Update"
                   enctype="multipart/form-data"
                   method="post"
-                  class="row g-3 needs-validation">
+                  class="row g-3">
                 @Html.AntiForgeryToken()
 
                 @* Hidden fields *@
@@ -28,63 +31,57 @@
                 <input type="hidden" asp-for="CourseId" />
 
                 <div class="col-12">
-                    <label asp-for="Title" class="form-label">Tiêu đề bài học</label>
-                    <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài học" required />
-                    <div class="invalid-feedback">Tiêu đề là bắt buộc.</div>
+                    <label asp-for="Title" class="form-label fw-semibold">Tiêu đề bài học</label>
+                    <input asp-for="Title" class="form-control rounded-3" placeholder="Nhập tiêu đề bài học" required />
                     <span asp-validation-for="Title" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12 col-md-4">
-                    <label asp-for="OrderIndex" class="form-label">Số thứ tự</label>
-                    <input asp-for="OrderIndex" type="number" min="1" class="form-control" placeholder="1" required />
-                    <div class="invalid-feedback">Vui lòng nhập số thứ tự hợp lệ.</div>
+                    <label asp-for="OrderIndex" class="form-label fw-semibold">Số thứ tự</label>
+                    <input asp-for="OrderIndex" type="number" min="1" class="form-control rounded-3" placeholder="1" required />
                     <span asp-validation-for="OrderIndex" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12 col-md-8">
-                    <label class="form-label">Tải lên Video / Tài liệu PDF</label>
-                    <input type="file" name="lessonFile" class="form-control" accept=".mp4,.mkv,.avi,.pdf" />
-                    <div class="form-text">Hỗ trợ định dạng video (.mp4,...) hoặc tài liệu (.pdf). File sẽ được lưu tự động theo khóa học.</div>
-                    @if (!string.IsNullOrEmpty(Model.ContentUrl) && (Model.ContentUrl.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase) || Model.ContentUrl.EndsWith(".mkv", StringComparison.OrdinalIgnoreCase)))
+                    <label class="form-label fw-semibold">Tải lên Video / Tài liệu PDF</label>
+                    <input type="file" name="lessonFile" class="form-control rounded-3" accept=".mp4,.mkv,.avi,.pdf" />
+                    <div class="form-text">Hỗ trợ định dạng video (.mp4,...) hoặc tài liệu (.pdf).</div>
+
+                    @if (!string.IsNullOrEmpty(Model?.ContentUrl) && (Model.ContentUrl.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase) || Model.ContentUrl.EndsWith(".mkv", StringComparison.OrdinalIgnoreCase)))
                     {
-                        <div class="ratio ratio-16x9 my-3">
-                            <video controls controlsList="nodownload" class="rounded shadow-sm">
+                        <div class="ratio ratio-16x9 my-3 rounded-4 overflow-hidden shadow-sm">
+                            <video controls controlsList="nodownload">
                                 <source src="@Model.ContentUrl" type="video/mp4" />
                                 Trình duyệt của bạn không hỗ trợ thẻ video.
                             </video>
                         </div>
                     }
-                    else if (!string.IsNullOrEmpty(Model.ContentUrl) && Model.ContentUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                    else if (!string.IsNullOrEmpty(Model?.ContentUrl) && Model.ContentUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                     {
-                        <div class="alert alert-info">
-                            Đây là tài liệu dạng PDF. <a href="@Model.ContentUrl" target="_blank" class="alert-link">Nhấn vào đây để xem hoặc tải về</a>.
+                        <div class="alert alert-info rounded-3 mt-2">
+                            Tài liệu PDF hiện tại: <a href="@Model.ContentUrl" target="_blank" class="alert-link fw-semibold">Nhấn vào đây để xem</a>.
                         </div>
                     }
-                    else
+                    else if (!string.IsNullOrEmpty(Model?.ContentUrl))
                     {
-                        <p class="text-muted">Chưa có nội dung video hoặc tài liệu cho bài học này.</p>
+                        <div class="alert alert-secondary rounded-3 mt-2 small">
+                            URL hiện tại: <code>@Model.ContentUrl</code>
+                        </div>
                     }
                 </div>
 
                 <div class="col-12">
-                    <label asp-for="Description" class="form-label">Nội dung mô tả</label>
-                    <textarea asp-for="Description" class="form-control" rows="6" placeholder="Mô tả chi tiết cho bài học..."></textarea>
+                    <label asp-for="Description" class="form-label fw-semibold">Mô tả chi tiết bài học (Rich Text)</label>
+                    <textarea asp-for="Description" id="lessonRichDesc" class="form-control" rows="6"></textarea>
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
-                <div class="col-12 d-flex gap-2 justify-content-end mt-2">
+                <div class="col-12 d-flex gap-2 justify-content-end mt-3">
                     <a asp-area="Instructor" asp-controller="Lessons" asp-action="Index" asp-route-courseId="@Model?.CourseId"
-                       class="btn btn-outline-secondary">Quay lại</a>
+                       class="btn btn-light rounded-pill px-4">Quay lại</a>
 
-                    <button type="submit" class="btn btn-primary">
-                        @if (isEdit)
-                        {
-                            <text>Lưu thay đổi</text>
-                        }
-                        else
-                        {
-                            <text>Lưu bài học</text>
-                        }
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold">
+                        Lưu thay đổi
                     </button>
                 </div>
             </form>
@@ -94,21 +91,23 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script>
-        // Bootstrap 5 client-side validation helper
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
+        $(document).ready(function() {
+            $('#lessonRichDesc').summernote({
+                placeholder: 'Nhập nội dung mô tả bài học, ghi chú hoặc liên kết tham khảo...',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'italic', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+        });
     </script>
 }

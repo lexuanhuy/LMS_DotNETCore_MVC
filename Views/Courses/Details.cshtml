@@ -21,7 +21,7 @@
     <div class="row g-4">
         <!-- LEFT WORKSPACE (col-lg-8): Dynamic Content & Player -->
         <div class="col-12 col-lg-8">
-            
+
             <!-- VIEW A: COURSE OVERVIEW (DEFAULT ACTIVE) -->
             <div id="overviewWorkspace">
                 <!-- Header section -->
@@ -165,10 +165,10 @@
                         </div>
                     }
 
-                    <!-- Lesson Description -->
+                    <!-- Lesson Description (Đã sửa để hiển thị HTML) -->
                     <div class="bg-light p-3 rounded-4">
                         <h6 class="fw-bold mb-1">Mô tả bài học</h6>
-                        <p class="text-secondary mb-0 small" id="activeLessonDescription">Nội dung bài học...</p>
+                        <div class="text-secondary mb-0 small" id="activeLessonDescription">Nội dung bài học...</div>
                     </div>
                 </div>
             </div>
@@ -177,8 +177,8 @@
 
         <!-- RIGHT SIDEBAR (col-lg-4): Enrollment Card & Navigation List -->
         <div class="col-12 col-lg-4">
-            <div  style="top: 4rem;">
-                
+            <div style="top: 4rem;">
+
                 <!-- Price / Progress Status Card -->
                 <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
                     <div class="mb-3 text-center">
@@ -231,7 +231,7 @@
                     </div>
 
                     <div class="list-group list-group-flush" style="max-height: 520px; overflow-y: auto;">
-                        
+
                         <!-- ITEM 0: DEFAULT OVERVIEW TAB -->
                         <button type="button"
                                 class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center gap-3 border-0 active nav-item-btn"
@@ -251,12 +251,18 @@
                             foreach (var lesson in Model.Lessons.OrderBy(l => l.OrderIndex))
                             {
                                 bool isCompleted = completedLessonIds.Contains(lesson.Id);
+
+                                // Mã hóa mô tả bài học sang Base64 để tránh lỗi khi truyền qua thuộc tính HTML data-*
+                                var base64Desc = !string.IsNullOrEmpty(lesson.Description)
+                                ? Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(lesson.Description))
+                                : "";
+
                                 <button type="button"
                                         class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center justify-content-between border-0 lesson-nav-item nav-item-btn"
                                         data-lesson-id="@lesson.Id"
                                         data-course-id="@Model.Id"
                                         data-lesson-title="@lesson.Title"
-                                        data-lesson-desc="@(lesson.Description ?? "")"
+                                        data-lesson-desc-base64="@base64Desc"
                                         data-content-url="@(lesson.ContentUrl ?? "")"
                                         data-is-completed="@(isCompleted ? "true" : "false")"
                                         data-index="@idx">
@@ -351,8 +357,8 @@
                     if (data.success) {
                         updateProgressUI(lessonId, data.isCompleted, data.newPercentage);
                         if (markDoneBtn) {
-                            markDoneBtn.innerHTML = data.isCompleted 
-                                ? '<i class="bi bi-check-circle-fill me-1"></i> Đã hoàn thành' 
+                            markDoneBtn.innerHTML = data.isCompleted
+                                ? '<i class="bi bi-check-circle-fill me-1"></i> Đã hoàn thành'
                                 : '<i class="bi bi-check-lg me-1"></i> Đánh dấu đã học xong';
                         }
                     }
@@ -366,7 +372,20 @@
                     const lId = parseInt(this.getAttribute('data-lesson-id'));
                     const cId = parseInt(this.getAttribute('data-course-id'));
                     const title = this.getAttribute('data-lesson-title');
-                    const desc = this.getAttribute('data-lesson-desc');
+
+                    // Decode chuỗi Base64 mô tả bài học để lấy lại HTML ban đầu một cách an toàn
+                    const base64Desc = this.getAttribute('data-lesson-desc-base64');
+                    let desc = '';
+                    if (base64Desc) {
+                        try {
+                            desc = decodeURIComponent(atob(base64Desc).split('').map(function(c) {
+                                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                            }).join(''));
+                        } catch (e) {
+                            desc = base64Desc;
+                        }
+                    }
+
                     const url = this.getAttribute('data-content-url');
                     const idx = this.getAttribute('data-index');
                     const isCompleted = this.getAttribute('data-is-completed') === 'true';
@@ -388,11 +407,13 @@
 
                     document.getElementById('activeLessonIndex').textContent = `Bài ${idx}`;
                     document.getElementById('activeLessonTitle').textContent = title;
-                    document.getElementById('activeLessonDescription').textContent = desc || 'Chưa có mô tả chi tiết cho bài học này.';
+
+                    // Sử dụng innerHTML để hiển thị đúng định dạng các thẻ HTML trong mô tả bài học
+                    document.getElementById('activeLessonDescription').innerHTML = desc || 'Chưa có mô tả chi tiết cho bài học này.';
 
                     if (markDoneBtn) {
-                        markDoneBtn.innerHTML = isCompleted 
-                            ? '<i class="bi bi-check-circle-fill me-1"></i> Đã hoàn thành' 
+                        markDoneBtn.innerHTML = isCompleted
+                            ? '<i class="bi bi-check-circle-fill me-1"></i> Đã hoàn thành'
                             : '<i class="bi bi-check-lg me-1"></i> Đánh dấu đã học xong';
                     }
 
@@ -412,7 +433,7 @@
                         mediaContainer.innerHTML = `<div class="ratio ratio-16x9 w-100"><iframe src="${embedUrl}" allowfullscreen class="rounded-4"></iframe></div>`;
                     } else if (url.match(/\.(mp4|webm|ogg)$/i)) {
                         mediaContainer.innerHTML = `<video controls autoplay class="w-100 rounded-4" id="workspaceVideoPlayer" style="max-height: 450px;"><source src="${url}"></video>`;
-                        
+
                         setTimeout(() => {
                             const videoEl = document.getElementById('workspaceVideoPlayer');
                             if (videoEl) {

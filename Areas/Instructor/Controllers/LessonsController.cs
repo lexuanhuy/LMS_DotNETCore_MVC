@@ -1,4 +1,4 @@
-﻿using LMS_DotNETCore_MVC.Data;
+using LMS_DotNETCore_MVC.Data;
 using LMS_DotNETCore_MVC.Models;
 using LMS_DotNETCore_MVC.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -88,7 +88,8 @@ namespace LMS_DotNETCore_MVC.Areas.Instructor.Controllers
         {
             // Bỏ qua validate các trường điều hướng hệ thống
             ModelState.Remove(nameof(lesson.Course));
-            ModelState.Remove(nameof(lesson.ContentUrl)); // FileUrl sẽ được gán bằng code bên dưới
+            ModelState.Remove(nameof(lesson.ContentUrl));
+            ModelState.Remove(nameof(lesson.Description)); // Cho phép HTML từ Summernote
 
             if (ModelState.IsValid)
             {
@@ -143,7 +144,8 @@ namespace LMS_DotNETCore_MVC.Areas.Instructor.Controllers
 
             // Bỏ qua validate các trường hệ thống không gửi từ form cập nhật
             ModelState.Remove(nameof(lesson.Course));
-            ModelState.Remove(nameof(lesson.ContentUrl)); // FileUrl sẽ xử lý riêng bên dưới
+            ModelState.Remove(nameof(lesson.ContentUrl));
+            ModelState.Remove(nameof(lesson.Description)); // Cho phép HTML từ Summernote
 
             if (ModelState.IsValid)
             {

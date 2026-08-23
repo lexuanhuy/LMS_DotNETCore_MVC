@@ -3,32 +3,28 @@
   "WorkspaceRootPath": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\views\\courses\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:views\\courses\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\admin\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\admin\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\instructor\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\instructor\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\instructor\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\instructor\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\instructor\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\instructor\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\instructor\\controllers\\coursescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\instructor\\controllers\\coursescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\views\\enrollments\\mycourses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:views\\enrollments\\mycourses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\instructor\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\instructor\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|d:\\huylx\\projects\\lms_dotnetcore_mvc\\areas\\instructor\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BCECF3E9-438C-4ACC-9B01-DF9D3DB2D357}|LMS_DotNETCore_MVC.csproj|solutionrelative:areas\\instructor\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,93 +42,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CoursesController.cs",
-              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Controllers\\CoursesController.cs",
-              "RelativeDocumentMoniker": "Areas\\Instructor\\Controllers\\CoursesController.cs",
-              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Controllers\\CoursesController.cs",
-              "RelativeToolTip": "Areas\\Instructor\\Controllers\\CoursesController.cs",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAiwG4AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-23T05:18:55.195Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Courses\\Details.cshtml",
-              "RelativeDocumentMoniker": "Views\\Courses\\Details.cshtml",
-              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Courses\\Details.cshtml",
-              "RelativeToolTip": "Views\\Courses\\Details.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA7AAAAAAAAAA==",
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Admin\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\_ViewImports.cshtml",
+              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Admin\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\_ViewImports.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-23T04:22:59.048Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MyCourses.cshtml",
-              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Enrollments\\MyCourses.cshtml",
-              "RelativeDocumentMoniker": "Views\\Enrollments\\MyCourses.cshtml",
-              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Enrollments\\MyCourses.cshtml",
-              "RelativeToolTip": "Views\\Enrollments\\MyCourses.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-23T04:22:49.199Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\Dashboard\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Instructor\\Views\\Dashboard\\Index.cshtml",
-              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\Dashboard\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Instructor\\Views\\Dashboard\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOoAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-23T04:16:12.004Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "DashboardController.cs",
-              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Controllers\\DashboardController.cs",
-              "RelativeDocumentMoniker": "Areas\\Instructor\\Controllers\\DashboardController.cs",
-              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Controllers\\DashboardController.cs",
-              "RelativeToolTip": "Areas\\Instructor\\Controllers\\DashboardController.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAcwEEAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-23T04:16:03.913Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABYAAABJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-23T04:08:34.869Z",
+              "WhenOpened": "2026-08-23T06:24:34.924Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Instructor\\Views\\_ViewStart.cshtml",
+              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "Areas\\Instructor\\Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-23T06:24:14.26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Instructor\\Views\\_ViewImports.cshtml",
+              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "Areas\\Instructor\\Views\\_ViewImports.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-23T06:24:12.074Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "_LoginPartial.cshtml",
               "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Shared\\_LoginPartial.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_LoginPartial.cshtml",
               "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Views\\Shared\\_LoginPartial.cshtml",
               "RelativeToolTip": "Views\\Shared\\_LoginPartial.cshtml",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA8AAAACAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACYAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-22T23:38:16.077Z",
+              "WhenOpened": "2026-08-23T06:22:52.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Instructor\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Instructor\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Areas\\Instructor\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-23T06:19:11.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAMkAAAAAAAAAAAAswNoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-23T06:18:59.155Z",
               "EditorCaption": ""
             }
           ]

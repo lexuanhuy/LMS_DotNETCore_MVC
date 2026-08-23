@@ -20,7 +20,9 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
     <style>
-
+        .admin-user .navbar-nav {
+            flex-direction: row;
+        }
     </style>
 </head>
 
@@ -106,7 +108,7 @@
 
             <!-- Users -->
 
-            <a href="#"
+            <a href="/Admin/Users"
                class="admin-menu-item">
 
                 <i class="bi bi-people-fill"></i>
@@ -169,16 +171,20 @@
             </a>
 
 
-            <a href="#"
-               class="admin-menu-item admin-logout">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="border-0 bg-transparent w-100">
+                    <a href="#"
+                       class="admin-menu-item admin-logout">
 
-                <i class="bi bi-box-arrow-right"></i>
+                        <i class="bi bi-box-arrow-right"></i>
 
-                <span>
-                    Đăng xuất
-                </span>
+                        <span>
+                            Đăng xuất
+                        </span>
 
-            </a>
+                    </a>
+                </button>
+            </form>
 
         </div>
 
@@ -208,21 +214,7 @@
 
             <div class="admin-user">
 
-                <div class="admin-user-avatar">
-                    <i class="bi bi-person-fill"></i>
-                </div>
-
-                <div class="admin-user-info">
-
-                    <strong>
-                        Admin
-                    </strong>
-
-                    <small>
-                        Quản trị viên
-                    </small>
-
-                </div>
+                <partial name="_LoginPartial" />
 
             </div>
 
