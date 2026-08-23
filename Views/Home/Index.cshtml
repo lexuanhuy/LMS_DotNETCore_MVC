@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LMS_DotNETCore_MVC.Models.Course>
+@model IEnumerable<LMS_DotNETCore_MVC.Models.Course>
 
 @{
     ViewData["Title"] = "Trang chủ";
@@ -91,94 +91,34 @@
         </div>
 
         <div class="row g-4">
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="/Courses?category=Programming"
-                   class="text-decoration-none">
-
-                    <div class="category-card text-center p-4 h-100">
-                        <div class="category-icon bg-primary-subtle text-primary">
-                            💻
-                        </div>
-
-                        <h5 class="fw-bold mt-3 mb-1">
-                            Lập trình
-                        </h5>
-
-                        <p class="text-muted small mb-0">
-                            Web, Mobile, Software
-                        </p>
+            @{
+                var categories = ViewBag.Categories as IEnumerable<LMS_DotNETCore_MVC.Models.Category>;
+            }
+            @if (categories != null && categories.Any())
+            {
+                foreach (var cat in categories)
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <a href="/Courses?categoryId=@cat.Id" class="text-decoration-none">
+                            <div class="category-card text-center p-4 h-100">
+                                <div class="category-icon bg-primary-subtle text-primary">
+                                    @cat.IconClass
+                                </div>
+                                <h5 class="fw-bold mt-3 mb-1 text-dark">
+                                    @cat.Name
+                                </h5>
+                                <p class="text-muted small mb-0">
+                                    @cat.Description
+                                </p>
+                            </div>
+                        </a>
                     </div>
-
-                </a>
-            </div>
-
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="/Courses?category=Database"
-                   class="text-decoration-none">
-
-                    <div class="category-card text-center p-4 h-100">
-                        <div class="category-icon bg-success-subtle text-success">
-                            🗄️
-                        </div>
-
-                        <h5 class="fw-bold mt-3 mb-1">
-                            Cơ sở dữ liệu
-                        </h5>
-
-                        <p class="text-muted small mb-0">
-                            SQL, MySQL, SQL Server
-                        </p>
-                    </div>
-
-                </a>
-            </div>
-
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="/Courses?category=Design"
-                   class="text-decoration-none">
-
-                    <div class="category-card text-center p-4 h-100">
-                        <div class="category-icon bg-warning-subtle text-warning">
-                            🎨
-                        </div>
-
-                        <h5 class="fw-bold mt-3 mb-1">
-                            Thiết kế
-                        </h5>
-
-                        <p class="text-muted small mb-0">
-                            UI/UX, Figma, Photoshop
-                        </p>
-                    </div>
-
-                </a>
-            </div>
-
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="/Courses?category=Business"
-                   class="text-decoration-none">
-
-                    <div class="category-card text-center p-4 h-100">
-                        <div class="category-icon bg-danger-subtle text-danger">
-                            📊
-                        </div>
-
-                        <h5 class="fw-bold mt-3 mb-1">
-                            Kinh doanh
-                        </h5>
-
-                        <p class="text-muted small mb-0">
-                            Marketing, Sales, Business
-                        </p>
-                    </div>
-
-                </a>
-            </div>
-
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center text-muted py-3">Chưa có danh mục nào.</div>
+            }
         </div>
     </div>
 </section>

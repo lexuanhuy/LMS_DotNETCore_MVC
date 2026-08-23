@@ -1,10 +1,13 @@
 using LMS_DotNETCore_MVC.Data;
+using LMS_DotNETCore_MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS_DotNETCore_MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class InstructorsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using LMS_DotNETCore_MVC.Models;
@@ -28,5 +28,11 @@ namespace LMS_DotNETCore_MVC.Data
 
         public ICollection<Enrollment> Enrollments { get; set; }
             = new HashSet<Enrollment>();
+
+        public ICollection<LessonProgress> LessonProgresses { get; set; }
+            = new HashSet<LessonProgress>();
+
+        public ICollection<CourseReview> Reviews { get; set; }
+            = new HashSet<CourseReview>();
     }
 }

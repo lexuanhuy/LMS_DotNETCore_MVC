@@ -115,8 +115,13 @@ public class RegisterModel : PageModel
             await _roleManager.CreateAsync(
                 new IdentityRole(SD.Role_Student));
         }
+        if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
+        {
+            await _roleManager.CreateAsync(
+               new IdentityRole(SD.Role_Admin));
+        }
 
-        Input = new InputModel
+            Input = new InputModel
         {
             RoleList = _roleManager.Roles
                 .Select(x => x.Name)

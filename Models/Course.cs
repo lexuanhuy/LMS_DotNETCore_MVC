@@ -1,4 +1,4 @@
-﻿using LMS_DotNETCore_MVC.Data;
+using LMS_DotNETCore_MVC.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,6 +29,12 @@ namespace LMS_DotNETCore_MVC.Models
         [ForeignKey(nameof(InstructorId))]
         public ApplicationUser? Instructor { get; set; }
 
+        // Danh mục
+        public int? CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public Category? Category { get; set; }
+
         // Bài học
         public ICollection<Lesson> Lessons { get; set; }
             = new List<Lesson>();
@@ -36,5 +42,9 @@ namespace LMS_DotNETCore_MVC.Models
         // Học viên đăng ký
         public ICollection<Enrollment> Enrollments { get; set; }
             = new List<Enrollment>();
+
+        // Đánh giá
+        public ICollection<CourseReview> Reviews { get; set; }
+            = new List<CourseReview>();
     }
 }

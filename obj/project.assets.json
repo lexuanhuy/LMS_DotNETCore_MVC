@@ -7793,19 +7793,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MHDANG\\.nuget\\packages\\": {}
+    "C:\\Users\\lehuy\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\LMS_DotNETCore_MVC\\LMS_DotNETCore_MVC.csproj",
+      "projectUniqueName": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\LMS_DotNETCore_MVC.csproj",
       "projectName": "LMS_DotNETCore_MVC",
-      "projectPath": "D:\\LMS_DotNETCore_MVC\\LMS_DotNETCore_MVC.csproj",
-      "packagesPath": "C:\\Users\\MHDANG\\.nuget\\packages\\",
-      "outputPath": "D:\\LMS_DotNETCore_MVC\\obj\\",
+      "projectPath": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\LMS_DotNETCore_MVC.csproj",
+      "packagesPath": "C:\\Users\\lehuy\\.nuget\\packages\\",
+      "outputPath": "D:\\huylx\\projects\\LMS_DotNETCore_MVC\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\MHDANG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lehuy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7883,7 +7888,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.314/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

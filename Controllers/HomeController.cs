@@ -9,16 +9,22 @@ namespace LMS_DotNETCore_MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICourseRepository _courseRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public HomeController(ILogger<HomeController> logger, ICourseRepository courseRepository)
+        public HomeController(
+            ILogger<HomeController> logger,
+            ICourseRepository courseRepository,
+            ICategoryRepository categoryRepository)
         {
             _logger = logger;
             _courseRepository = courseRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<IActionResult> Index()
         {
             var courses = await _courseRepository.GetAllCoursesAsync();
+            ViewBag.Categories = await _categoryRepository.GetAllCategoriesAsync();
             return View(courses);
         }
 

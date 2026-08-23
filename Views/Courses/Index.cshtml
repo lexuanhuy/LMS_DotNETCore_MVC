@@ -1,79 +1,114 @@
-﻿@model IEnumerable<LMS_DotNETCore_MVC.Models.Course>
+@model IEnumerable<LMS_DotNETCore_MVC.Models.Course>
 
 @{
     ViewData["Title"] = "Danh sách khóa học";
 
     var currentFilter = ViewBag.CurrentFilter as string ?? "";
-    var pageNumber = ViewBag.CurrentPage as int? ?? 1; // Khớp với tên ViewBag.CurrentPage bên Controller
+    var pageNumber = ViewBag.CurrentPage as int? ?? 1;
     var totalPages = ViewBag.TotalPages as int? ?? 1;
+    var categories = ViewBag.Categories as IEnumerable<LMS_DotNETCore_MVC.Models.Category>;
+    var selectedCategory = ViewBag.SelectedCategory as int?;
 }
 
 <div class="container py-4">
-    <!-- Search & Filters -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <form class="row g-2" method="get" asp-action="Index">
-                <div class="col-md-6 col-sm-8 col-12">
-                    <div class="input-group">
-                        <input type="search"
-                               name="searchString"
-                               class="form-control"
-                               placeholder="Tìm tên khóa học..."
-                               value="@currentFilter" />
-                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                        <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Courses")">Xóa bộ lọc</a>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-4 d-flex justify-content-md-end mt-2 mt-md-0">
-                    <!-- Place for future filters (category, level, sort...) -->
-                </div>
-            </form>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Khám phá khóa học</h2>
+            <p class="text-muted mb-0">Học tập kỹ năng mới từ danh sách các khóa học hàng đầu</p>
         </div>
+    </div>
+
+    <!-- Search & Category Filters -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-light">
+        <form class="row g-2 align-items-center" method="get" asp-action="Index">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 rounded-start-pill text-muted">🔍</span>
+                    <input type="search"
+                           name="searchString"
+                           class="form-control border-start-0 rounded-end-pill"
+                           placeholder="Tìm theo tên khóa học hoặc mô tả..."
+                           value="@currentFilter" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select name="categoryId" class="form-select rounded-pill" onchange="this.form.submit()">
+                    <option value="">-- Tất cả danh mục --</option>
+                    @if (categories != null)
+                    {
+                        foreach (var cat in categories)
+                        {
+                            <option value="@cat.Id" selected="@(selectedCategory == cat.Id ? "selected" : null)">
+                                @cat.IconClass @cat.Name
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button class="btn btn-primary rounded-pill w-100 fw-semibold" type="submit">Lọc khóa học</button>
+                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("Index", "Courses")">Xóa</a>
+            </div>
+        </form>
     </div>
 
     <!-- Course Grid -->
     @if (Model != null && Model.Any())
     {
-        <div class="row">
+        <div class="row g-4">
             @foreach (var course in Model)
             {
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        @if (!string.IsNullOrEmpty(course.ImageUrl))
-                        {
-                            <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title" style="object-fit:cover;height:180px;">
-                        }
-                        else
-                        {
-                            <div class="bg-light d-flex align-items-center justify-content-center" style="height:180px;">
-                                <span class="text-muted">Không có ảnh</span>
-                            </div>
-                        }
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden course-card">
+                        <div class="position-relative">
+                            @if (!string.IsNullOrEmpty(course.ImageUrl))
+                            {
+                                <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title" style="object-fit:cover;height:200px;" onerror="this.src='/images/course-thumbnail.png';">
+                            }
+                            else
+                            {
+                                <img src="/images/course-thumbnail.png" class="card-img-top" alt="@course.Title" style="object-fit:cover;height:200px;">
+                            }
+                            @if (course.Category != null)
+                            {
+                                <span class="badge bg-primary position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill shadow-sm">
+                                    @course.Category.IconClass @course.Category.Name
+                                </span>
+                            }
+                        </div>
 
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold mb-2" style="min-height:3.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title fw-bold mb-2 text-dark" style="min-height:3rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                 @course.Title
                             </h5>
 
-                            <p class="card-text text-muted mb-3" style="flex:0 0 auto;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+                            <p class="card-text text-muted small mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                 @course.Description
                             </p>
 
-                            <div class="mt-auto d-flex justify-content-between align-items-center">
-                                @if (@course.Price > 0)
+                            <div class="d-flex align-items-center text-muted small mb-3">
+                                <i class="bi bi-person-circle me-1 text-primary"></i>
+                                <span>@(course.Instructor?.FullName ?? "Giảng viên")</span>
+                                <span class="mx-2">•</span>
+                                <i class="bi bi-play-circle me-1 text-success"></i>
+                                <span>@course.Lessons.Count bài học</span>
+                            </div>
+
+                            <div class="mt-auto d-flex justify-content-between align-items-center pt-3 border-top">
+                                @if (course.Price > 0)
                                 {
-                                    <div class="text-primary fw-semibold fs-5">
-                                        @course.Price
+                                    <div class="text-primary fw-bold fs-5">
+                                        @string.Format("{0:N0} ₫", course.Price)
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="text-primary fw-semibold fs-5">
+                                    <div class="text-success fw-bold fs-5">
                                         Miễn phí
                                     </div>
                                 }
 
-                                <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-outline-primary btn-sm">Xem chi tiết</a>
+                                <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary btn-sm rounded-pill px-3">Chi tiết</a>
                             </div>
                         </div>
                     </div>
@@ -84,21 +119,21 @@
         <!-- Pagination -->
         @if (totalPages > 1)
         {
-            <nav aria-label="Page navigation">
+            <nav aria-label="Page navigation" class="mt-5">
                 <ul class="pagination justify-content-center">
                     <li class="page-item @(pageNumber <= 1 ? "disabled" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-page="@(pageNumber - 1)" asp-route-searchString="@currentFilter">Trang trước</a>
+                        <a class="page-link rounded-pill me-1" asp-action="Index" asp-route-page="@(pageNumber - 1)" asp-route-searchString="@currentFilter" asp-route-categoryId="@selectedCategory">Trang trước</a>
                     </li>
 
                     @for (int i = 1; i <= totalPages; i++)
                     {
                         <li class="page-item @(i == pageNumber ? "active" : "")" aria-current="@(i == pageNumber ? "page" : null)">
-                            <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-searchString="@currentFilter">@i</a>
+                            <a class="page-link rounded-circle mx-1" asp-action="Index" asp-route-page="@i" asp-route-searchString="@currentFilter" asp-route-categoryId="@selectedCategory">@i</a>
                         </li>
                     }
 
                     <li class="page-item @(pageNumber >= totalPages ? "disabled" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-page="@(pageNumber + 1)" asp-route-searchString="@currentFilter">Trang tiếp</a>
+                        <a class="page-link rounded-pill ms-1" asp-action="Index" asp-route-page="@(pageNumber + 1)" asp-route-searchString="@currentFilter" asp-route-categoryId="@selectedCategory">Trang tiếp</a>
                     </li>
                 </ul>
             </nav>
@@ -108,11 +143,12 @@
     {
         <div class="row">
             <div class="col-12">
-                <div class="card border-0 shadow-sm text-center py-5">
+                <div class="card border-0 shadow-sm text-center py-5 rounded-4">
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Không tìm thấy khóa học nào phù hợp</h4>
-                        <p class="text-muted mb-4">Thử thay đổi từ khóa tìm kiếm hoặc xóa bộ lọc để xem tất cả khóa học.</p>
-                        <a class="btn btn-primary" href="@Url.Action("Index", "Courses")">Quay lại</a>
+                        <div class="fs-1 mb-2">📚</div>
+                        <h4 class="card-title mb-2">Không tìm thấy khóa học phù hợp</h4>
+                        <p class="text-muted mb-4">Thử thay đổi từ khóa tìm kiếm hoặc chọn danh mục khác.</p>
+                        <a class="btn btn-primary rounded-pill px-4" href="@Url.Action("Index", "Courses")">Xem tất cả khóa học</a>
                     </div>
                 </div>
             </div>

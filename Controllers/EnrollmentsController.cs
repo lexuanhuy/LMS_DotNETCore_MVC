@@ -1,4 +1,4 @@
-﻿using LMS_DotNETCore_MVC.Models;
+using LMS_DotNETCore_MVC.Models;
 using LMS_DotNETCore_MVC.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,55 +10,61 @@ namespace LMS_DotNETCore_MVC.Controllers
     {
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ILessonProgressRepository _progressRepository;
 
-        public EnrollmentsController(IEnrollmentRepository enrollmentRepository, ICourseRepository courseRepository)
+        public EnrollmentsController(
+            IEnrollmentRepository enrollmentRepository,
+            ICourseRepository courseRepository,
+            ILessonProgressRepository progressRepository)
         {
             _enrollmentRepository = enrollmentRepository;
             _courseRepository = courseRepository;
+            _progressRepository = progressRepository;
         }
 
-        // 1. Hiển thị danh sách tất cả các lượt đăng ký (Dành cho Admin - GET: Enrollments)
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Index()
         {
             var enrollments = await _enrollmentRepository.GetAllEnrollmentsAsync();
             return View(enrollments);
         }
 
-        // 2. Chức năng học viên bấm nút "Đăng ký khóa học" (POST: Enrollments/Enroll)
         [HttpPost]
-        [Authorize] // Bắt buộc phải đăng nhập mới được đăng ký học
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Enroll(int courseId)
         {
-            // Lấy ID của user đang đăng nhập từ hệ thống Identity
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
-                return Challenge(); // Chuyển hướng về trang đăng nhập nếu chưa login
+                return Challenge();
             }
 
-            // Kiểm tra xem khóa học có tồn tại không
             var course = await _courseRepository.GetCourseByIdAsync(courseId);
             if (course == null)
             {
                 return NotFound();
             }
 
-            // Tạo bản ghi đăng ký mới
+            var existingEnrollments = await _enrollmentRepository.GetEnrollmentsByStudentIdAsync(userId);
+            if (existingEnrollments.Any(e => e.CourseId == courseId))
+            {
+                TempData["Success"] = "Bạn đã đăng ký khóa học này trước đó rồi!";
+                return RedirectToAction(nameof(MyCourses));
+            }
+
             var enrollment = new Enrollment
             {
                 StudentId = userId,
-                CourseId = courseId
+                CourseId = courseId,
+                EnrollDate = DateTime.Now
             };
 
-            // Lưu vào DB (Bạn nhớ viết thêm hàm AddEnrollmentAsync trong IEnrollmentRepository nhé)
             await _enrollmentRepository.AddEnrollmentAsync(enrollment);
-
-            // Đăng ký xong chuyển hướng về trang "Khóa học của tôi"
+            TempData["Success"] = "Đăng ký khóa học thành công! Chúc bạn học tốt.";
             return RedirectToAction(nameof(MyCourses));
         }
 
-        // 3. Trang "Khóa học của tôi" - Hiển thị danh sách khóa học mà user hiện tại đã đăng ký (GET: Enrollments/MyCourses)
         [Authorize]
         public async Task<IActionResult> MyCourses()
         {
@@ -69,6 +75,15 @@ namespace LMS_DotNETCore_MVC.Controllers
             }
 
             var myEnrollments = await _enrollmentRepository.GetEnrollmentsByStudentIdAsync(userId);
+
+            var progressDict = new Dictionary<int, double>();
+            foreach (var item in myEnrollments)
+            {
+                double pct = await _progressRepository.GetCourseCompletionPercentageAsync(userId, item.CourseId);
+                progressDict[item.CourseId] = pct;
+            }
+
+            ViewBag.ProgressDict = progressDict;
             return View(myEnrollments);
         }
     }

@@ -1,5 +1,7 @@
 using LMS_DotNETCore_MVC.Data;
+using LMS_DotNETCore_MVC.Data.DbInitializer;
 using LMS_DotNETCore_MVC.Repositories;
+using LMS_DotNETCore_MVC.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,8 +22,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ILessonProgressRepository, LessonProgressRepository>();
+builder.Services.AddScoped<ICourseReviewRepository, CourseReviewRepository>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 
 var app = builder.Build();
+
+// Seed Database
+await SeedDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,21 +50,27 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-    name: "Admin",
+app.MapControllerRoute(
+    name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-    endpoints.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-});
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();
+
+async Task SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        await dbInitializer.InitializeAsync();
+    }
+}
+

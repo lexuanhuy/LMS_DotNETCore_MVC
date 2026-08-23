@@ -1,142 +1,153 @@
-﻿using LMS_DotNETCore_MVC.Models;
+using LMS_DotNETCore_MVC.Models;
 using LMS_DotNETCore_MVC.Repositories;
+using LMS_DotNETCore_MVC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LMS_DotNETCore_MVC.Controllers
 {
     public class CoursesController : Controller
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly ILessonProgressRepository _progressRepository;
+        private readonly ICourseReviewRepository _reviewRepository;
+        private readonly IFileStorageService _fileStorageService;
 
-        public CoursesController(ICourseRepository courseRepository)
+        public CoursesController(
+            ICourseRepository courseRepository,
+            ICategoryRepository categoryRepository,
+            ILessonProgressRepository progressRepository,
+            ICourseReviewRepository reviewRepository,
+            IFileStorageService fileStorageService)
         {
             _courseRepository = courseRepository;
+            _categoryRepository = categoryRepository;
+            _progressRepository = progressRepository;
+            _reviewRepository = reviewRepository;
+            _fileStorageService = fileStorageService;
         }
 
-        public async Task<IActionResult> Index(string searchString, int page = 1)
+        public async Task<IActionResult> Index(string searchString, int? categoryId, int page = 1)
         {
-            int pageSize = 6; // Số lượng khóa học hiển thị trên 1 trang (bạn có thể đổi thành 9, 12...)
-
-            // Gọi Repository lấy danh sách và tổng số trang
+            int pageSize = 6;
             var result = await _courseRepository.GetCoursesPaginatedAsync(searchString, page, pageSize);
 
-            // Truyền dữ liệu phân trang và từ khóa tìm kiếm ra giao diện View qua ViewBag
+            var courses = result.Courses;
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                courses = courses.Where(c => c.CategoryId == categoryId.Value).ToList();
+            }
+
+            ViewBag.Categories = await _categoryRepository.GetAllCategoriesAsync();
+            ViewBag.SelectedCategory = categoryId;
             ViewBag.CurrentFilter = searchString;
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = result.TotalPages;
 
-            return View(result.Courses);
+            return View(courses);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int? lessonId)
         {
             var course = await _courseRepository.GetCourseByIdAsync(id);
             if (course == null)
             {
                 return NotFound();
             }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            bool isEnrolled = false;
+            double completionPercentage = 0;
+            IEnumerable<int> completedLessonIds = new List<int>();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var enrollments = course.Enrollments;
+                isEnrolled = enrollments != null && enrollments.Any(e => e.StudentId == userId);
+                if (isEnrolled)
+                {
+                    completedLessonIds = await _progressRepository.GetCompletedLessonIdsAsync(userId, id);
+                    completionPercentage = await _progressRepository.GetCourseCompletionPercentageAsync(userId, id);
+                }
+            }
+
+            var reviews = await _reviewRepository.GetReviewsByCourseIdAsync(id);
+            double avgRating = await _reviewRepository.GetAverageRatingAsync(id);
+
+            ViewBag.IsEnrolled = isEnrolled;
+            ViewBag.CompletedLessonIds = completedLessonIds;
+            ViewBag.CompletionPercentage = completionPercentage;
+            ViewBag.Reviews = reviews;
+            ViewBag.AverageRating = avgRating;
+            ViewBag.CurrentLessonId = lessonId ?? course.Lessons.FirstOrDefault()?.Id;
+
             return View(course);
         }
 
-        // 3. HIỂN THỊ FORM TẠO KHÓA HỌC MỚI (GET: Courses/Create)
-        // [Authorize] -> Bật dòng này nếu muốn bắt buộc phải đăng nhập mới được tạo khóa học
-        public IActionResult Create()
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleProgress(int lessonId, int courseId)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Challenge();
+            }
+
+            await _progressRepository.ToggleLessonProgressAsync(userId, lessonId);
+            return RedirectToAction(nameof(Details), new { id = courseId, lessonId = lessonId });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(int courseId, int rating, string comment)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Challenge();
+            }
+
+            var review = new CourseReview
+            {
+                CourseId = courseId,
+                StudentId = userId,
+                Rating = rating,
+                Comment = comment,
+                CreatedAt = DateTime.Now
+            };
+
+            await _reviewRepository.AddReviewAsync(review);
+            TempData["Success"] = "Cảm ơn bạn đã gửi đánh giá cho khóa học!";
+            return RedirectToAction(nameof(Details), new { id = courseId });
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Categories = await _categoryRepository.GetAllCategoriesAsync();
             return View();
         }
 
-        // XỬ LÝ LƯU KHÓA HỌC MỚI (POST: Courses/Create)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Course course, IFormFile imageUrl)
+        public async Task<IActionResult> Create(Course course, IFormFile? imageUrl)
         {
-            // Gán tạm InstructorId hoặc lấy từ User đang đăng nhập nếu có Identity
-            // Ở đây để mặc định hoặc test, bạn có thể truyền ID cố định hoặc bắt buộc nhập
             if (ModelState.IsValid)
             {
                 if (imageUrl != null)
                 {
-                    course.ImageUrl = await SaveImage(imageUrl);
+                    course.ImageUrl = await _fileStorageService.SaveFileAsync(imageUrl, "images");
                 }
 
                 await _courseRepository.AddCourseAsync(course);
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Categories = await _categoryRepository.GetAllCategoriesAsync();
             return View(course);
-        }
-
-        // 4. HIỂN THỊ FORM CHỈNH SỬA KHÓA HỌC (GET: Courses/Edit/5)
-        public async Task<IActionResult> Edit(int id)
-        {
-            var course = await _courseRepository.GetCourseByIdAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            return View(course);
-        }
-
-        // XỬ LÝ LƯU CẬP NHẬT (POST: Courses/Edit/5)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Course course, IFormFile imageUrl)
-        {
-            ModelState.Remove("ImageUrl");
-
-            if (id != course.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                var existingCourse = await _courseRepository.GetCourseByIdAsync(id);
-
-                if (imageUrl == null)
-                {
-                    course.ImageUrl = existingCourse.ImageUrl;
-                }
-                else
-                {
-                    // Lưu hình ảnh mới
-                    course.ImageUrl = await SaveImage(imageUrl);
-                }
-
-                await _courseRepository.UpdateCourseAsync(course);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(course);
-        }
-
-        // 5. XÓA KHÓA HỌC (GET: Courses/Delete/5 - Xác nhận xóa)
-        public async Task<IActionResult> Delete(int id)
-        {
-            var course = await _courseRepository.GetCourseByIdAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            return View(course);
-        }
-
-        // XỬ LÝ XÓA THỰC TẾ (POST: Courses/Delete/5)
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _courseRepository.DeleteCourseAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        private async Task<string> SaveImage(IFormFile image)
-        {
-            //Thay đổi đường dẫn theo cấu hình của bạn
-            var savePath = Path.Combine("wwwroot/images", image.FileName);
-            using (var fileStream = new FileStream(savePath, FileMode.Create))
-            {
-                await image.CopyToAsync(fileStream);
-            }
-            return "/images/" + image.FileName; // Trả về đường dẫn tương đối
         }
     }
 }

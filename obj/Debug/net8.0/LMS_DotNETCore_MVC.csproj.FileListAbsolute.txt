@@ -137,7 +137,6 @@ D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\staticwebassets.build.json
 D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\staticwebassets.development.json
 D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\LMS_DotN.DBA45B10.Up2Date
 D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\LMS_DotNETCore_MVC.dll
 D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\refint\LMS_DotNETCore_MVC.dll
@@ -524,3 +523,5 @@ D:\LMS_DotNETCore_MVC\obj\Debug\net8.0\refint\LMS_DotNETCore_MVC.dll
 D:\LMS_DotNETCore_MVC\obj\Debug\net8.0\LMS_DotNETCore_MVC.pdb
 D:\LMS_DotNETCore_MVC\obj\Debug\net8.0\LMS_DotNETCore_MVC.genruntimeconfig.cache
 D:\LMS_DotNETCore_MVC\obj\Debug\net8.0\ref\LMS_DotNETCore_MVC.dll
+D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\LMS_DotNETCore_MVC.sourcelink.json
+D:\huylx\projects\LMS_DotNETCore_MVC\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

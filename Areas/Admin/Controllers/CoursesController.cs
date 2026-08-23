@@ -1,12 +1,14 @@
 using LMS_DotNETCore_MVC.Data;
 using LMS_DotNETCore_MVC.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace LMS_DotNETCore_MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;

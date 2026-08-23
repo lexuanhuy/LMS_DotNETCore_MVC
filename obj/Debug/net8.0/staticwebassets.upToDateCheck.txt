@@ -1,3 +1,4 @@
+wwwroot\css\admin.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\2.png
@@ -7,6 +8,7 @@ wwwroot\images\course-thumbnail-fallback-DEIeglVQ.png
 wwwroot\images\course-thumbnail.png
 wwwroot\js\site.js
 wwwroot\lessons\1\4a3771b2-5f46-411d-ab3b-2b6ead7d401b_video-01.mp4
+wwwroot\lessons\1\b7871c72-6bbc-46b3-a459-fbd2fb7c0036_video-02.mp4
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css

@@ -1,0 +1,81 @@
+@model IEnumerable<LMS_DotNETCore_MVC.Models.Enrollment>
+@{
+    ViewData["Title"] = "Khóa học của tôi";
+    var progressDict = ViewBag.ProgressDict as Dictionary<int, double> ?? new Dictionary<int, double>();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Khóa học của tôi</h2>
+            <p class="text-muted mb-0">Theo dõi tiến độ học tập và tiếp tục bài học của bạn</p>
+        </div>
+        <a asp-controller="Courses" asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">
+            <i class="bi bi-plus-circle me-1"></i> Khám phá khóa học mới
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="card border-0 shadow-sm text-center py-5 rounded-4">
+            <div class="card-body">
+                <div class="fs-1 mb-3">🎓</div>
+                <h4 class="fw-bold mb-2">Bạn chưa đăng ký khóa học nào</h4>
+                <p class="text-muted mb-4">Hãy tham khảo danh sách các khóa học hấp dẫn và bắt đầu học ngay hôm nay!</p>
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-primary rounded-pill px-4">Xem khóa học</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var enroll in Model)
+            {
+                double pct = progressDict.ContainsKey(enroll.CourseId) ? progressDict[enroll.CourseId] : 0;
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden d-flex flex-column">
+                        <div class="position-relative">
+                            <img src="@(enroll.Course?.ImageUrl ?? "/images/course-thumbnail.png")" 
+                                 alt="@enroll.Course?.Title" 
+                                 class="card-img-top" 
+                                 style="height: 180px; object-fit: cover;"
+                                 onerror="this.src='/images/course-thumbnail.png';">
+                            <span class="badge bg-dark bg-opacity-75 position-absolute bottom-0 start-0 m-3 rounded-pill px-3">
+                                Đã đăng ký: @enroll.EnrollDate.ToString("dd/MM/yyyy")
+                            </span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h5 class="fw-bold text-dark mb-2" style="min-height:2.8rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                @enroll.Course?.Title
+                            </h5>
+                            <p class="text-muted small mb-3">
+                                Giảng viên: <strong>@(enroll.Course?.Instructor?.FullName ?? "Đang cập nhật")</strong>
+                            </p>
+
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-1 small fw-semibold">
+                                    <span class="text-primary">Tiến độ</span>
+                                    <span class="text-primary">@pct%</span>
+                                </div>
+                                <div class="progress rounded-pill bg-light mb-3" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: @pct%"></div>
+                                </div>
+                                <a asp-controller="Courses" asp-action="Details" asp-route-id="@enroll.CourseId" class="btn btn-primary rounded-pill w-100 fw-semibold">
+                                    <i class="bi bi-play-fill me-1"></i> Tiếp tục học
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
