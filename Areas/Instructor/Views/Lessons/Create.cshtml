@@ -5,6 +5,9 @@
     ViewData["Title"] = isEdit ? "Sửa bài học" : "Thêm bài học";
 }
 
+<!-- Summernote WYSIWYG CDN -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="h4 mb-0">@ViewData["Title"]</h1>
@@ -56,7 +59,7 @@
 
                 <div class="col-12">
                     <label asp-for="Description" class="form-label">Nội dung mô tả</label>
-                    <textarea asp-for="Description" class="form-control" rows="6" placeholder="Mô tả chi tiết cho bài học..."></textarea>
+                    <textarea asp-for="Description" id="lessonRichDesc" class="form-control" rows="6" placeholder="Mô tả chi tiết cho bài học..."></textarea>
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
@@ -98,5 +101,22 @@
                     }, false)
                 })
         })()
+
+        $(document).ready(function() {
+            $('#lessonRichDesc').summernote({
+                placeholder: 'Nhập nội dung mô tả bài học, ghi chú hoặc liên kết tham khảo...',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'italic', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+        });
     </script>
 }
