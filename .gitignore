@@ -10,6 +10,12 @@ x86/
 [Ll]og/
 [Ll]ogs/
 
+# AI files
+.ai/
+.agents/
+.agent/
+.copilot/
+
 # Visual Studio files
 .vs/
 *.rsuser
