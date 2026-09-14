@@ -15,6 +15,7 @@ x86/
 .agents/
 .agent/
 .copilot/
+GEMINI.md
 
 # Visual Studio files
 .vs/

@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Thanh toán thành công";
+}
+
+<div class="container mt-5 text-center">
+    <div class="alert alert-success">
+        <h2 class="alert-heading">Giao dịch thành công!</h2>
+        <p>Cảm ơn bạn đã thanh toán. Đơn hàng của bạn (Mã đơn: @ViewBag.OrderId) đã được xử lý thành công.</p>
+        <hr>
+        <p class="mb-0">
+            <a href="@Url.Action("Index", "Student")" class="btn btn-primary">Đi đến khóa học của tôi</a>
+        </p>
+    </div>
+</div>

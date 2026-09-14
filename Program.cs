@@ -1,5 +1,6 @@
 using LMS_DotNETCore_MVC.Data;
 using LMS_DotNETCore_MVC.Data.DbInitializer;
+using LMS_DotNETCore_MVC.Models;
 using LMS_DotNETCore_MVC.Repositories;
 using LMS_DotNETCore_MVC.Services;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,10 @@ builder.Services.AddScoped<ILessonProgressRepository, LessonProgressRepository>(
 builder.Services.AddScoped<ICourseReviewRepository, CourseReviewRepository>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+
+// Configure MoMo Options and Service
+builder.Services.Configure<MoMoOptionModel>(builder.Configuration.GetSection("MoMoSetting"));
+builder.Services.AddScoped<IMoMoService, MoMoService>();
 
 var app = builder.Build();
 

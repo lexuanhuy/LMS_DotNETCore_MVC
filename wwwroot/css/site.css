@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+/*  margin-bottom: 60px;*/
 }
 
 .lms-logo {
@@ -31,4 +31,44 @@ body {
     border-radius: 8px;
     font-weight: bold;
     color: #fff !important;
+}
+
+.qr-demo-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.qr-demo-header {
+    background: linear-gradient(135deg, #d82d8b, #ae2070);
+    color: #fff;
+    padding: 1.5rem 1.75rem;
+}
+
+.qr-demo-body {
+    padding: 1.75rem;
+}
+
+.qr-demo-frame {
+    display: inline-block;
+    padding: 12px;
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 12px;
+}
+
+.qr-demo-timer {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.qr-demo-amount {
+    color: #d82d8b;
+    font-weight: 700;
+}
+
+.qr-demo-courses {
+    padding-left: 1.1rem;
+    margin-bottom: 0;
 }

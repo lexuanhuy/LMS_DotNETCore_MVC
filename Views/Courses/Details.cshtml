@@ -213,13 +213,26 @@
                     }
                     else
                     {
-                        <form asp-controller="Enrollments" asp-action="Enroll" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="courseId" value="@Model?.Id" />
-                            <button type="submit" class="btn btn-primary btn-lg rounded-pill w-100 shadow-sm">
-                                <i class="bi bi-box-arrow-in-right me-1"></i> Đăng ký học ngay
-                            </button>
-                        </form>
+                        @if (Model?.Price > 0)
+                        {
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="courseId" value="@Model?.Id" />
+                                <button type="submit" class="btn btn-warning btn-lg rounded-pill w-100 shadow-sm text-white fw-bold">
+                                    <i class="bi bi-cart-plus me-1"></i> Thêm vào giỏ hàng
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Enrollments" asp-action="Enroll" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="courseId" value="@Model?.Id" />
+                                <button type="submit" class="btn btn-primary btn-lg rounded-pill w-100 shadow-sm fw-bold">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> Đăng ký học ngay
+                                </button>
+                            </form>
+                        }
                     }
                 </div>
 

@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Thanh toán thất bại";
+}
+
+<div class="container mt-5 text-center">
+    <div class="alert alert-danger">
+        <h2 class="alert-heading">Giao dịch thất bại!</h2>
+        <p>Đã xảy ra lỗi trong quá trình thanh toán. Chi tiết lỗi: @ViewBag.Message</p>
+        <hr>
+        <p class="mb-0">
+            <a href="@Url.Action("Index", "Cart")" class="btn btn-warning">Quay lại Giỏ hàng</a>
+        </p>
+    </div>
+</div>

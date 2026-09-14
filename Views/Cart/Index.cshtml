@@ -1,0 +1,61 @@
+@model LMS_DotNETCore_MVC.Models.Cart
+
+@{
+    ViewData["Title"] = "Giỏ hàng của bạn";
+}
+
+<div class="container mt-5">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (Model == null || Model.CartItems == null || !Model.CartItems.Any())
+    {
+        <div class="alert alert-info">
+            Giỏ hàng của bạn đang trống. <a href="@Url.Action("Index", "Courses")">Khám phá khóa học ngay!</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Khóa học</th>
+                            <th>Giá</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td>@item.Course.Title</td>
+                                <td>@item.Price.ToString("N0") VNĐ</td>
+                                <td>
+                                    <form asp-action="RemoveFromCart" method="post">
+                                        <input type="hidden" name="itemId" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Tổng cộng
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">@Model.CartItems.Sum(ci => ci.Price).ToString("N0") VNĐ</h4>
+                        <form asp-controller="Payment" asp-action="CreateDemoPayment" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success w-100 mt-3">Thanh toán QR (Demo)</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,75 @@
+@model LMS_DotNETCore_MVC.Models.Order
+
+@{
+    ViewData["Title"] = "Thanh toán QR Demo";
+    var qrPayload = $"LMS-DEMO|{Model.Id}|{Model.TotalAmount:0}|{Model.OrderInfo}";
+    var qrUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=260x260&data={Uri.EscapeDataString(qrPayload)}";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="qr-demo-card">
+                <div class="qr-demo-header">
+                    <h2 class="mb-1">Thanh toán QR Demo</h2>
+                    <p class="mb-0">Mô phỏng quét QR — không kết nối MoMo thật</p>
+                </div>
+
+                <div class="row g-4 qr-demo-body">
+                    <div class="col-md-5 text-center">
+                        <div class="qr-demo-frame">
+                            <img src="@qrUrl" alt="Mã QR thanh toán demo" width="260" height="260" />
+                        </div>
+                        <div class="qr-demo-timer mt-3">
+                            Hết hạn sau <strong id="qrCountdown">05:00</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <p class="text-muted mb-1">Mã đơn</p>
+                        <p class="fw-semibold">@Model.Id</p>
+                        <p class="text-muted mb-1">Nội dung</p>
+                        <p>@Model.OrderInfo</p>
+                        <p class="text-muted mb-1">Số tiền</p>
+                        <h3 class="qr-demo-amount">@Model.TotalAmount.ToString("N0") VNĐ</h3>
+
+                        <ul class="qr-demo-courses">
+                            @foreach (var detail in Model.OrderDetails)
+                            {
+                                <li>@detail.Course.Title — @detail.Price.ToString("N0") VNĐ</li>
+                            }
+                        </ul>
+
+                        <form asp-action="ConfirmDemoPayment" method="post" class="d-grid gap-2 mt-3">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="orderId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success btn-lg">Tôi đã quét QR (thành công)</button>
+                        </form>
+                        <form asp-action="CancelDemoPayment" method="post" class="mt-2" id="cancelDemoForm">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="orderId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-secondary w-100">Hủy thanh toán</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        let remaining = 300;
+        const el = document.getElementById("qrCountdown");
+        const timer = setInterval(function () {
+            remaining -= 1;
+            if (remaining <= 0) {
+                clearInterval(timer);
+                document.getElementById("cancelDemoForm")?.submit();
+                return;
+            }
+            const m = String(Math.floor(remaining / 60)).padStart(2, "0");
+            const s = String(remaining % 60).padStart(2, "0");
+            el.textContent = m + ":" + s;
+        }, 1000);
+    })();
+</script>
